@@ -9,12 +9,12 @@ class Category extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['name', 'icon','description','rank','slug','parent_id'];
+    protected $fillable = ['name', 'icon','description','rank','slug','parent_id','type'];
 
  
     public function subcategory()
     {
-        return $this->hasMany(\App\Models\Category::class, 'parent_id');
+        return $this->hasMany(\App\Models\Category::class, 'parent_id')->orderBy('rank');
     }
     
     public function images()

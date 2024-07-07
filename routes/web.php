@@ -3,14 +3,16 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SubCategoryController;
-use App\Http\Controllers\SubSubCategoryController;
+
 use Illuminate\Support\Facades\Route;
 
 //use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,9 +28,12 @@ use App\Http\Controllers\DashboardController;
 //     return view('admin/index');
 // });
 
+Route::middleware(['frontenddata'])->group(function () {
+    Route::get('/',[HomeController::class, 'index']);
+});
 
 
-Route::get('/',[HomeController::class, 'index']);
+Route::get('/category/{slug}',[HomeController::class, 'category'])->name('category-page');
 Route::get('/remember-me',[HomeController::class, 'remember_me'])->name('remember-me');
 Route::post('/login-post',[AuthController::class,'login_post'])->name('admin-login-post');
 Route::get('/login',[AuthController::class,'login']);
@@ -52,16 +57,52 @@ Route::group(['prefix'=>'admin-panel','middleware'=>\App\Http\Middleware\checkAd
 
 
  
-    Route::resource('categories', CategoryController::class);
+     //Route::resource('blogs', CategoryController::class);
     Route::group(['prefix'=>'categories'],function(){
 
-    Route::get('/check-slug/{slug}',[CategoryController::class, 'check_slug'])->name('check-slug');
-    Route::get('/check-slug/{slug}',[CategoryController::class, 'check_slug'])->name('check-slug');
-    Route::get('/select-categories/{cat_id}',[CategoryController::class,'select_categories'])->name('select-categories');
-  //  Route::get('/show-sub-categories/{cat_id}',[CategoryController::class, 'show_sub_categories'])->name('show-sub-categories');
-     Route::get('/show-up-categories/{cat_id}',[CategoryController::class, 'show_up_categories'])->name('show-up-categories');
-     Route::get('/select-count/{cat_id}',[CategoryController::class, 'select_count'])->name('select-count');
+
+    Route::get('/{type?}',[CategoryController::class,'index'])->name('categories.index');
+    Route::get('/create/{type?}',[CategoryController::class,'create'])->name('categories.create');
+    Route::get('/edit/{slug}',[CategoryController::class,'edit'])->name('categories.edit');
+    Route::post('/update',[CategoryController::class,'update'])->name('category-update');
+    Route::post('/store',[CategoryController::class,'store'])->name('categories.store');
+    Route::post('/delete',[CategoryController::class,'destroy'])->name('category-delete');
+    Route::get('/check-slug/{slug}/{type?}/{id?}',[CategoryController::class, 'check_slug'])->name('check-slug');
+    Route::get('/select-categories/{cat_id}/{type?}/{show?}',[CategoryController::class,'select_categories'])->name('select-categories');
+    Route::get('/show-up-categories/{cat_id}',[CategoryController::class, 'show_up_categories'])->name('show-up-categories');
+    Route::get('/show-sub-categories/{cat_id}/{type?}',[CategoryController::class, 'show_sub_categories'])->name('show-sub-categories');
+    Route::get('/show-category-images/{cat_id}/{image_id?}/{rank?}',[CategoryController::class, 'show_category_images'])->name('show-category-images');
+    Route::get('/delete-category-image/{image_id}',[CategoryController::class, 'delete_category_image'])->name('delete-category-images');
+    Route::get('/show-image/{type}/{id}',[CategoryController::class,'show_image'])->name('show-image');
+   //Route::get('/categories-div/{cat_id}',[CategoryController::class,'categories_div'])->name('categories-div');
  
         });
+
+ 
+        //Route::resource('blogs', BlogController::class);
+        Route::group(['prefix'=>'blogs'],function(){
+            Route::get('/',[BlogController::class,'index'])->name('blogs.index');
+            Route::get('/check-slug/{slug}/{type?}/{id?}',[BlogController::class, 'check_slug'])->name('check-slug');
+            Route::get('/create/{type?}',[BlogController::class,'create'])->name('blogs.create');
+            Route::post('/store',[BlogController::class,'store'])->name('blogs.store');
+            Route::post('/delete',[BlogController::class,'destroy'])->name('blogs-delete');
+            Route::get('/edit/{slug}',[BlogController::class,'edit'])->name('blogs.edit');
+            Route::post('/update',[BlogController::class,'update'])->name('blogs-update');
+            Route::get('/show-blog-images/{blog_id}/{image_id?}/{rank?}',[BlogController::class, 'show_blog_images'])->name('show-blog-images');
+            Route::get('/delete-blog-image/{image_id}',[BlogController::class, 'delete_blog_image'])->name('delete-blog-images');
+        });
+
+        Route::group(['prefix'=>'products'],function(){
+            Route::get('/',[ProductController::class,'index'])->name('products.index');
+            Route::get('/check-slug/{slug}/{type?}/{id?}',[ProductController::class, 'check_slug'])->name('check-slug');
+            Route::get('/create/{type?}',[ProductController::class,'create'])->name('products.create');
+            Route::post('/store',[ProductController::class,'store'])->name('products.store');
+            Route::post('/delete',[ProductController::class,'destroy'])->name('products-delete');
+            Route::get('/edit/{slug}',[ProductController::class,'edit'])->name('products.edit');
+            Route::post('/update',[ProductController::class,'update'])->name('products-update');
+            Route::get('/show-product-images/{product_id}/{image_id?}/{rank?}',[BlogController::class, 'show_product_images'])->name('show-blog-images');
+            Route::get('/delete-product-image/{image_id}',[ProductController::class, 'delete_product_image'])->name('delete-product-images');
+        });
+
       
 });

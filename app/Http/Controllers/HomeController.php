@@ -4,16 +4,24 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Category;
 use App\Http\Requests\LoginUserRequest;
-use Session;
+use Illuminate\Support\Facades\Session;
+
 use App\Traits\HttpResponses;
 class HomeController extends Controller
 {
 
     use HttpResponses;
     public function index(){
-            return response()->redirectTo('/login');
+        return view('front.index' );
+           /// return response()->redirectTo('/login');
     }
+
+    public function category($slug){
+        return $slug;
+    }
+
     public function remember_me(){
         return view('admin.call_me');
     }

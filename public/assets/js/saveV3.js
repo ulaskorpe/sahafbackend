@@ -1,8 +1,9 @@
 function save(formData,route,formID,btn,reload) {
  
     $.ajax({
-        type: 'POST',
+        
         url:  route,
+        type: 'POST',
         data: formData,
         cache: false,
         contentType: false,

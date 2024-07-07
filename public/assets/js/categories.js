@@ -1,7 +1,7 @@
 function rankSelect(){
     var sel = ($('#parent_id').val()>0)? '#cat_select_'+$('#parent_id').val() : '#cat_select';
     var count = ( $( sel+' option').length >0) ? $( sel+' option').length - 1 : 0;
-    console.log(sel);
+    
     var rankSelect = $('#rank');
     rankSelect.empty(); 
     for (var i = count+1; i >0 ; i--) {
@@ -30,7 +30,11 @@ async function remove_selects(){
 }
 
 
+
+
+
 async function add_selects(cat_id){
+   // $('#cats_div').html('');
     if(cat_id>0){
     const response = await fetch('/admin-panel/categories/select-categories/' + cat_id, {
         headers: {
@@ -52,8 +56,9 @@ async function add_selects(cat_id){
 }
 
  async function select_cat(cat_id){
+    //alert(cat_id);
     if(cat_id>0){
-   categories_added.push('cat_select_'+cat_id);
+        categories_added.push('cat_select_'+cat_id);
     $('#parent_id').val(cat_id);
    ////remove first 
     await remove_selects();
@@ -64,11 +69,12 @@ async function add_selects(cat_id){
    
 
     }else{
+     
         await remove_selects();
         $('#parent_id').val($('#cat_select').val());
         add_selects($('#cat_select').val());
         
-       console.log(categories_added);
+      console.log(categories_added);
         $.each(categories_added, function(index, selectId) {
                   $('#' + selectId).remove();
             
@@ -80,9 +86,7 @@ async function add_selects(cat_id){
 
 function appendSelect(jsonData,cat_id){
  
-  
-
-         
+        
 
         var newSelect = $("<select>")
             .attr("name", "cat_select_"+cat_id)
@@ -116,3 +120,12 @@ function appendSelect(jsonData,cat_id){
         });
        
  } //// appendSelect
+
+
+
+
+function makeSlug() {
+    let slug = slugify($('#name').val());
+    $('#slug').val(slug);
+    console.log(slug)
+}

@@ -12,7 +12,7 @@ trait HttpResponses{
         ],$code);
 
     }
-    private $allowed_array = ['jpg', 'jpeg'];
+
     protected function error($data,$message=null,$code){
 
         return response()->json([

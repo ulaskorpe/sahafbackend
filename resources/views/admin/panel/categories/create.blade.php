@@ -12,15 +12,15 @@
                 <div class="col-sm-4">
                     <div class="page-header float-left">
                         <div class="page-title">
-                            <h1>Kategori Ekle</h1>
+                            <h1>{{($type=='blog')?"Blog":"Ürün"}} Kategorisi Ekle</h1>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-8">
                     <div class="page-header float-right">
-                        <div class="page-title">
-                            <button type="button" onclick="window.open('{{ route('categories.index') }}','_self')"
-                                class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp; Kategoriler</button>
+                        <div class="page-title"> 
+                            <button type="button" onclick="window.open('{{ route('categories.index',$type) }}','_self')"
+                                class="btn btn-primary">  Kategoriler</button>
                         </div>
                     </div>
                 </div>
@@ -34,11 +34,13 @@
 
                 <div class="col-lg-12">
                     <div class="card">
-
+                        
                         <div class="card-body card-block">
+                           
                             <form class="form" id="category-form" name="category-form"
                                 action="{{ route('categories.store') }}" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="type" id="type" value="{{ $type}}">
 
 
                                 <div class="row form-group">
@@ -68,30 +70,8 @@
                                         <textarea name="description" id="description" rows="9" placeholder="açıklama..." class="form-control"></textarea>
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <input type="text" name="parent_id" id="parent_id" value="0" >
-                                   
-                                    <div class="col col-md-3"><label for="select" class=" form-control-label">Üst
-                                            Kategori</label></div>
-                                    <div class="col-12 col-md-9">
-                                        <select name="cat_select" id="cat_select" class="form-control"
-                                        onchange="select_cat(this.value)">
-                                        <option value="0">Seçiniz</option>
-                                        @foreach ($categories as $cat)
-                                            <option value="{{ $cat['id'] }}">{{ $cat['name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                        <div id="cats_div">  </div>
-                                    </div>
-                                </div>
-
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="select" class=" form-control-label">Sıra</label>
-                                    </div>
-                                    <div class="col-12 col-md-9">
-                                        <select name="rank" id="rank" class="form-control" ></select>
-                                    </div>
-                                </div>
+                                <div id="cats_div"></div>
+                               
 
 
 
@@ -140,94 +120,80 @@
     <script type="text/javascript">
 
 $(function() { 
-    rankSelect({{$count}});
+    //rankSelect({{$count}});
+    select_cats(0,'{{$type}}',1)
 });
-        $('#category-form').submit(function(e) {
-            e.preventDefault();
-            var error = false;
-            var formData = new FormData(this);
+$('#category-form').submit(function(e) {
+    e.preventDefault();
+    var error = false;
+    var formData = new FormData(this);
+    formData.append('additionalData', 'value');
+});
+
+
+document.getElementById('icon').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        document.getElementById('previewImage').src = e.target.result;
+        $('#preview_pic').show();
+    };
+
+    reader.readAsDataURL(file);
+});
+
+document.getElementById('name').addEventListener('input', function(event) {
+    // This function will be called whenever the text input changes
+    let slug = slugify($('#name').val());
+    $('#slug').val(slug);
+    $('#slug-span').html(slug);
+
+});
+ 
+async function formSubmit() {
+
+let error = false;
+if ($('#name').val() == '') {
+
+    $('#name').focus();
+    Swal.fire({
+        icon: 'error',
+        text: 'kategori adı giriniz'
+    });
+
+    error = true;
+    return false;
+} else {
+
+    const response = await fetch('/admin-panel/categories/check-slug/' + $('#slug').val()+"/"+ $('#type').val()+"/0");
+    const data = await response.json();
+    if (data !== 'ok') {
+        Swal.fire({
+            icon: 'error',
+            text: data
         });
 
+        error = true;
+        return false;
+    }
 
-        async function formSubmit() {
-
-            let error = false;
-            if ($('#name').val() == '') {
-
-                $('#name').focus();
-                Swal.fire({
-                    icon: 'error',
-                    text: 'kategori adı giriniz'
-                });
-
-                error = true;
-                return false;
-            } else {
-
-                const response = await fetch('/admin-panel/categories/check-slug/' + $('#slug').val());
-                const data = await response.json();
-                if (data !== 'ok') {
-                    Swal.fire({
-                        icon: 'error',
-                        text: data
-                    });
-
-                    error = true;
-                    return false;
-                }
-
-            }
-
-            console.log(error);
-            var formData = new FormData(document.getElementById('category-form'));
-            console.log(formData);
-            save(formData, '/admin-panel/categories', '', '');
-            // document.getElementById('category-form').reset();
-            setTimeout(() => {
-                window.open("{{ route('categories.index') }}", "_self")
-            }, 2000);
-
-        }
+}
 
 
-        function slugify(str) {
-            return String(str)
-                .normalize('NFKD') // split accented characters into their base characters and diacritical marks
-                .replace(/[\u0300-\u036f]/g,
-                '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
-                .trim() // trim leading or trailing whitespace
-                .toLowerCase() // convert to lowercase
-                .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
-                .replace(/\s+/g, '-') // replace spaces with hyphens
-                .replace(/-+/g, '-'); // remove consecutive hyphens
-        }
-        document.getElementById('icon').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
+var formData = new FormData(document.getElementById('category-form'));
 
-            reader.onload = function(e) {
-                document.getElementById('previewImage').src = e.target.result;
-                $('#preview_pic').show();
-            };
+save(formData, '/admin-panel/categories/store', '', '');
+ 
+setTimeout(() => {
+    window.open("/admin-panel/categories/{{$type}}", "_self")
+}, 2000);
 
-            reader.readAsDataURL(file);
-        });
+}
 
-        document.getElementById('name').addEventListener('input', function(event) {
-            // This function will be called whenever the text input changes
-            let slug = slugify($('#name').val());
-            $('#slug').val(slug);
-            $('#slug-span').html(slug);
-
-        });
-
-        function makeSlug() {
-            let slug = slugify($('#name').val());
-            $('#slug').val(slug);
-            console.log(slug)
-        }
+    
     </script>
 
 
-    <script type="text/javascript" src="{{ url('assets/js/categories.js') }}"></script>
+    <script type="text/javascript" src="{{ url('assets/js/categories2.js') }}"></script>
 @endsection
