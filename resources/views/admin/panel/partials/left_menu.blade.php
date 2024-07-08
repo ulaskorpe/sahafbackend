@@ -24,9 +24,10 @@
                     <ul class="sub-menu children dropdown-menu">
                         
                         <li><i class="fa fa-bars"></i><a href="{{route('categories.index','product')}}">Ürün Kategorileri</a></li>
-                        <li><i class="fa fa-bars"></i><a href="{{route('categories.index','product')}}">Yeni Eklenenler</a></li>
-                        <li><i class="fa fa-bars"></i><a href="{{route('categories.index','product')}}">Ürünler</a></li>
-                        <li><i class="fa fa-bars"></i><a href="{{route('categories.index','blog')}}">Blog Kategoriler</a></li>
+                        
+                        <li><i class="fa fa-bars"></i><a href="{{route('products.index')}}">Ürünler </a></li>
+                        <li><i class="fa fa-bars"></i><a href="{{route('products.index','1')}}">Onay Bekleyenler   ({{$product_count}}) </a></li>
+                        
                         
 
                          

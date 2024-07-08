@@ -9,7 +9,17 @@ class GeneralHelper extends Controller
 {
 
 
-    public static function randomPassword($len = 16,$alphabet=0) {
+
+    public static function makeYouTube($url){
+        $urlParts = parse_url($url);
+        $queryString = isset($urlParts['query']) ? $urlParts['query'] : '';
+        parse_str($queryString, $queryParams);
+        $videoId = isset($queryParams['v']) ? $queryParams['v'] : '';
+        return $videoId; 
+         }
+         
+         
+        public static function randomPassword($len = 16,$alphabet=0) {
         if($alphabet==1){
             $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@';
         }else{

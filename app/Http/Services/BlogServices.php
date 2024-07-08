@@ -12,14 +12,7 @@ class BlogServices{
     private $allowed_array = ['jpg', 'jpeg','png'];
 
   
- public function makeYouTube($url){
-$urlParts = parse_url($url);
-$queryString = isset($urlParts['query']) ? $urlParts['query'] : '';
-parse_str($queryString, $queryParams);
-$videoId = isset($queryParams['v']) ? $queryParams['v'] : '';
-return $videoId; 
- }
-    
+ 
     public function create_icon(Request $request,$slug){
 
        

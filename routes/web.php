@@ -88,19 +88,21 @@ Route::group(['prefix'=>'admin-panel','middleware'=>\App\Http\Middleware\checkAd
             Route::post('/delete',[BlogController::class,'destroy'])->name('blogs-delete');
             Route::get('/edit/{slug}',[BlogController::class,'edit'])->name('blogs.edit');
             Route::post('/update',[BlogController::class,'update'])->name('blogs-update');
+            Route::get('/show-image/{type}/{id}',[BlogController::class,'show_image'])->name('show-image');
             Route::get('/show-blog-images/{blog_id}/{image_id?}/{rank?}',[BlogController::class, 'show_blog_images'])->name('show-blog-images');
             Route::get('/delete-blog-image/{image_id}',[BlogController::class, 'delete_blog_image'])->name('delete-blog-images');
         });
 
         Route::group(['prefix'=>'products'],function(){
-            Route::get('/',[ProductController::class,'index'])->name('products.index');
+            Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+            Route::get('/{verified?}', [ProductController::class, 'index'])->name('products.index');
             Route::get('/check-slug/{slug}/{type?}/{id?}',[ProductController::class, 'check_slug'])->name('check-slug');
-            Route::get('/create/{type?}',[ProductController::class,'create'])->name('products.create');
+            Route::get('/show-image/{type}/{id}',[ProductController::class,'show_image'])->name('show-image');
             Route::post('/store',[ProductController::class,'store'])->name('products.store');
             Route::post('/delete',[ProductController::class,'destroy'])->name('products-delete');
             Route::get('/edit/{slug}',[ProductController::class,'edit'])->name('products.edit');
             Route::post('/update',[ProductController::class,'update'])->name('products-update');
-            Route::get('/show-product-images/{product_id}/{image_id?}/{rank?}',[BlogController::class, 'show_product_images'])->name('show-blog-images');
+            Route::get('/show-product-images/{product_id}/{image_id?}/{rank?}',[ProductController::class, 'show_product_images'])->name('show-blog-images');
             Route::get('/delete-product-image/{image_id}',[ProductController::class, 'delete_product_image'])->name('delete-product-images');
         });
 

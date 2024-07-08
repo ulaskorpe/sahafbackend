@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            //
+            $table->integer('product_count')->default(0)->after('rank');
+            $table->integer('promoted')->default(0)->after('product_count');
         });
     }
 

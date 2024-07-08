@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\CrudControllerInterface;
+use App\Http\Controllers\Helpers\GeneralHelper;
 use App\Http\Services\BlogServices;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\BlogImage;
-use App\Models\Category;
+ 
 use Exception;
 use Illuminate\Support\Facades\Auth;
-class BlogController extends Controller
+class BlogController extends Controller implements CrudControllerInterface
 {
 
     use HttpResponses;
@@ -24,7 +26,16 @@ class BlogController extends Controller
      */
     public function index()
     {
-        return view('admin.panel.blogs.index',['blogs'=>Blog::with('category','user')->get()]);
+        $blogs =Blog::with('category','user');
+        $blogs =  $blogs->orderBy('updated_at','DESC')->get();
+
+        $blogs->each(function ($blogs) {
+            if ($blogs->category) {
+                $blogs->category->append('parent_tree');
+            }
+        });
+
+        return view('admin.panel.blogs.index',['blogs'=>$blogs]);
     }
  
 
@@ -83,7 +94,7 @@ class BlogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(  $id)
     {
        
     }
@@ -103,12 +114,12 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(  $id)
     {
         $blog = Blog::with('images','user')->find($id);
         
  
-        return view('admin.panel.blogs.update',['blog'=>$blog,'blog_txt'=>str_replace("\"","'",($blog['blog'])),'youtube_link'=>  (!empty($blog['youtube_link'])) ? $this->service->makeYouTube($blog['youtube_link']) : '' ]);
+        return view('admin.panel.blogs.update',['blog'=>$blog,'blog_txt'=>str_replace("\"","'",($blog['blog'])),'youtube_link'=>  (!empty($blog['youtube_link'])) ? GeneralHelper::makeYouTube($blog['youtube_link']) : '' ]);
     }
 
     /**
@@ -146,7 +157,7 @@ class BlogController extends Controller
 
          
         $this->service->upload_multi_files($request,$blog);
-         
+          
           return  $this->success([''],"Blog Güncellendi" ,200);
         }catch (Exception $e){
            // return response()->json(['error' => $e->getMessage()], 500);

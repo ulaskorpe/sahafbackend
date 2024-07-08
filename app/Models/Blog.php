@@ -25,4 +25,9 @@ class Blog extends Model
         {
             return $this->belongsTo(\App\Models\User::class, 'user_id');
         }
+
+        public function siteItems()
+        {
+            return $this->morphMany(SiteItem::class, 'itemable');
+        }
 }

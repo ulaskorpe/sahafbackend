@@ -10,10 +10,10 @@ class ProductImage extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = ['image', 'image200','image50','rank','slug','product_id'];
-
-
-    public function category()
+    public function product()
     {
-        return $this->belongsTo(\App\Models\Category::class, 'product_id');
+        return $this->belongsTo(\App\Models\Product::class, 'product_id');
     }
+
+ 
 }

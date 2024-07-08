@@ -9,7 +9,10 @@ class Product extends Model
 {
     use HasFactory,SoftDeletes;
     protected $table = 'products';
-    protected $fillable = ['title', 'icon','description','prologue','slug','category_id','user_id','youtube_link','verified','verified_by'];
+    protected $fillable = ['title', 'icon','description','prologue'
+    ,'slug','category_id','user_id','youtube_link','verified','verified_by',
+    'start_price'
+    ,'buy_now_price','current_price','bid_price','winner_id'];
 
   
     public function images()
@@ -25,9 +28,22 @@ class Product extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
+    public function winner()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'winner_id');
+    }
 
     public function verified_by()
     {
         return $this->belongsTo(\App\Models\User::class, 'verified_by');
+    }
+
+    public function siteItems()
+    {
+        return $this->morphMany(SiteItem::class, 'itemable');
+    }
+
+    public function bidders(){
+        return $this->hasMany(\App\Models\ProductImage::class, 'product_id');
     }
 }

@@ -8,8 +8,9 @@ use App\Observers\CategoryObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Models\User;
-use App\Models\Blog;
+use App\Models\Product;
 use App\Observers\BlogObserver;
+use App\Observers\ProductObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         Category::observe(CategoryObserver::class);
+        Product::observe(ProductObserver::class);
       //  Blog::observe(BlogObserver::class);
     }
 }

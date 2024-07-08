@@ -75,7 +75,11 @@
                                 
                                 {{substr($blog['prologue'],0,50)}}
                                 </td>
-                                <td>{{$blog->category()->first()->name}}</td>
+                                <td>
+                                    @foreach ($blog->category->parentTree() as $parentCategory)
+                                    {{ $parentCategory->name }}  @if($parentCategory->id  != $blog['category_id']) >  @endif
+                             @endforeach
+                                </td>
                                 <td>{{$blog->user()->first()->name}}</td>
                                 
                                 

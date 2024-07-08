@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('site_items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('item_id');
+            $table->enum('source', ['App\Models\Product', 'App\Models\Blog']);
+            $table->dateTime('valid_until')->default(now()->addMonths(3));
+            $table->enum('type',['carousel','offer','featured','recent']);
+            $table->integer('rank');
+            $table->softdeletes();
             $table->timestamps();
         });
     }
-
+ 
     /**
      * Reverse the migrations.
      */

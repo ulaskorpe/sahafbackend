@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 class checkAdmin
 {
     /**
@@ -21,6 +22,8 @@ class checkAdmin
             return redirect('login');
  
         }
+        view()->share(['product_count'=> Product::whereNull('verified')->count()]);
+        
         return $next($request);
     }
 }
