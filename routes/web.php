@@ -12,6 +12,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SiteDataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +105,20 @@ Route::group(['prefix'=>'admin-panel','middleware'=>\App\Http\Middleware\checkAd
             Route::post('/update',[ProductController::class,'update'])->name('products-update');
             Route::get('/show-product-images/{product_id}/{image_id?}/{rank?}',[ProductController::class, 'show_product_images'])->name('show-blog-images');
             Route::get('/delete-product-image/{image_id}',[ProductController::class, 'delete_product_image'])->name('delete-product-images');
+        });
+
+        Route::group(['prefix'=>'site-data'],function(){
+            Route::get('/', [SiteDataController::class, 'index'])->name('site-data.index');
+            Route::get('/create', [SiteDataController::class, 'create'])->name('site-data.create');
+            Route::get('/check-slug/{slug}/{type?}/{id?}',[SiteDataController::class, 'check_slug'])->name('site-data-check-slug');
+            Route::post('/store',[SiteDataController::class,'store'])->name('site-data.store');
+            Route::get('/edit/{slug}',[SiteDataController::class,'edit'])->name('site-data.edit');
+            Route::post('/update',[SiteDataController::class,'update'])->name('site-data-update');
+        });
+
+
+        Route::group(['prefix'=>'pages'],function(){
+            Route::get('/', [SiteDataController::class, 'index'])->name('site-data.index');
         });
 
       

@@ -14,7 +14,7 @@ class ProductUpdatedMail extends Mailable
     use Queueable, SerializesModels;
 
     private $text;
-    private $subject; 
+    public $subject; 
 
     /**
      * Create a new message instance.
@@ -31,7 +31,7 @@ class ProductUpdatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->subject,
+            subject:$this->subject,
         );
     }
 

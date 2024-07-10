@@ -7,14 +7,21 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Http\Requests\LoginUserRequest;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
+use App\Mail\ProductUpdatedMail;
+use App\Mail\UserCreatedEmail;
 use App\Traits\HttpResponses;
 class HomeController extends Controller
 {
 
     use HttpResponses;
     public function index(){
+         //Mail::to('ulas@asd.com')->send(new ProductUpdatedMail('this is your life','ürününüz eklendi'));
+        //Mail::to('ulas@asdf.com')->send(new UserCreatedEmail('ulaş','13213546','134132'));
         return view('front.index' );
+        
            /// return response()->redirectTo('/login');
     }
 
@@ -39,7 +46,7 @@ class HomeController extends Controller
     public function login_post(Request $request){
         return json_encode([ $request ]);
       //  return response()->json("ok");
-       //Log::channel('data_check')->info($request->admin_code);
+        //Log::channel('data_check')->info($request->admin_code);
         if(!Auth::attempt(['admin_code' => $request->admin_code, 'password' => $request->password])){
             return $this->error('','no such admin',401);
         }

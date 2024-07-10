@@ -44,7 +44,7 @@
                     <div class="card">
                         
                         <div class="card-body card-block">
-                            <form class="form" id="product3-form" name="product-form"
+                            <form class="form" id="product-form" name="product-form"
                                 action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
 
@@ -151,7 +151,7 @@
                                 <div class="row form-group">
                                     <div class="col col-md-3"><label for="file-multiple-input"
                                             class=" form-control-label"></label></div>
-                                    <div class="col-12 col-md-9"><button onclick="formSubmit()"
+                                    <div class="col-12 col-md-9"><button onclick="formSubmit()" id="submit_button"
                                             class="btn btn-primary" onmouseover="fillproduct()">Ekle</button></div>
                                 </div>
                             </form>
@@ -346,11 +346,12 @@ return false;
 console.log(error);
  var formData = new FormData(document.getElementById('product-form'));
  //console.log(formData);
+ $('#submit_button').prop('disabled',true);
  save(formData, '{{ route('products.store') }}', '', '');
  
 setTimeout(() => {
     window.open("/admin-panel/products/", "_self")
-}, 2000);
+}, 3000);
 
   }
 function doesNotStartWithYouTube(str) {
