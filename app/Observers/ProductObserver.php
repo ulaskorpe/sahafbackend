@@ -25,7 +25,13 @@ class ProductObserver
     }
 
     public function saved(Product $product){
-        Log::channel('data_check')->info($product['name']." güncellendi::");
+        $txt = $product['title'];
+        if($product->isDirty('verified')){
+         
+            $txt .= ($product['verified']) ? 'Ürününüz onaylandı ':'ürün onayınız kaldırıldı';
+        }
+        Mail::to($product->user()->first()->email)->send(new ProductUpdatedMail($txt,'ürününüz güncellendi'));
+        Log::channel('data_check')->info($txt);
     }
 
 }
