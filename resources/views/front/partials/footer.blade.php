@@ -33,8 +33,8 @@
                         </div>
                     </div>
                     <div class="col-md-4 mb-5">
-                        <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-                        <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
+                        <h5 class="text-secondary text-uppercase mb-4">E-posta Abonelik</h5>
+                        <p>{{$site_data['eposta-abonelik']}}</p>
                         <form action="">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Your Email Address">
@@ -45,10 +45,10 @@
                         </form>
                         <h6 class="text-secondary text-uppercase mt-4 mb-3">Bizi Takip Edin</h6>
                         <div class="d-flex">
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                            <a class="btn btn-primary btn-square" href="#"><i class="fab fa-instagram"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="{{$site_data['facebook-link']}}" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="{{$site_data['facebook-link']}}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="{{$site_data['facebook-link']}}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-primary btn-square" href="{{$site_data['facebook-link']}}" target="_blank"><i class="fab fa-instagram"></i></a>
                         </div>
                     </div>
                 </div>

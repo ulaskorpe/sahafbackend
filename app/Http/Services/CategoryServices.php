@@ -48,6 +48,19 @@ class CategoryServices{
            
             $path = public_path("files/categories/" . $slug . "/" . $filename);
 
+            $resizedImage = Image::make($path)->resize(200,200, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+ 
+ 
+             $resizedImage->save(public_path("files/categories/" . $slug . "/200x200".$filename));
+
+             $resizedImage = Image::make($path)->resize(150,150, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+ 
+ 
+             $resizedImage->save(public_path("files/categories/" . $slug . "/150x150".$filename));
 
            $resizedImage = Image::make($path)->resize(100, null, function ($constraint) {
                $constraint->aspectRatio();
@@ -55,7 +68,7 @@ class CategoryServices{
 
 
             $resizedImage->save(public_path("files/categories/" . $slug . "/100".$filename));
-           $icon ="100".$filename;
+           $icon =$filename;
 
            }
 

@@ -63,7 +63,7 @@
                                             <td>
                                                 @if ($category['icon'])
                                                     <img
-                                                        src="{{ url('files/categories/' . $category['slug'] . '/' . $category['icon']) }}">
+                                                        src="{{ url('files/categories/' . $category['slug'] . '/100' . $category['icon']) }}">
                                                 @endif
                                             </td>
                                             <td>{{ $category['name'] }}</td>

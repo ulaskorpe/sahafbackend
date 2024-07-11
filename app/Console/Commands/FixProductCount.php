@@ -3,7 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
+use App\Models\Category;
+use App\Models\Product;
 class FixProductCount extends Command
 {
     /**
@@ -25,6 +26,11 @@ class FixProductCount extends Command
      */
     public function handle()
     {
-        //
+        $cats = Category::select('id')->get();
+        foreach($cats as $cat){
+            $count = Product::where('category_id','=',$cat['id'])->count();
+            $cat->product_count = $count;
+            $cat->save();
+        }
     }
 }

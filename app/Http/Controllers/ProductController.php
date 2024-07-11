@@ -10,8 +10,8 @@ use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Helpers\GeneralHelper;
 use App\Models\ProductImage;
-use App\Mail\UserCreatedEmail;
-use App\Models\User;
+//use App\Mail\UserCreatedEmail;
+///use App\Models\User;
 //use App\Models\Category;
 
 

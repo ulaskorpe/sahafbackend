@@ -2,14 +2,14 @@
 
 
 namespace App\Http\Services;
-use App\Models\Product;
+use App\Models\Page;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Helpers\GeneralHelper;
- 
-use App\Models\ProductImage;
+use Illuminate\Support\Facades\Log;
+use App\Models\PageImage;
 //use Illuminate\Support\Facades\Log;
-class ProductServices{
+class PageServices{
 
     private $allowed_array = ['jpg', 'jpeg','png'];
 
@@ -25,27 +25,27 @@ class ProductServices{
                 
                $ext = GeneralHelper::findExtension($file->getClientOriginalName());
                if (in_array($ext, $this->allowed_array)) {
-               $path = public_path("files/products/" . $slug);
+               $path = public_path("files/pages/" . $slug);
                $filename = GeneralHelper::fixName($request['title']) . "_" . date('YmdHis') . "." . GeneralHelper::findExtension($file->getClientOriginalName());
                $file->move($path, $filename);
               
-               $path = public_path("files/products/" . $slug . "/" . $filename);
+               $path = public_path("files/pages/" . $slug . "/" . $filename);
    
    
               $resizedImage = Image::make($path)->resize(100, null, function ($constraint) {
                   $constraint->aspectRatio();
               });
-              $resizedImage->save(public_path("files/products/" . $slug . "/100h".$filename));
+              $resizedImage->save(public_path("files/pages/" . $slug . "/100h".$filename));
               $resizedImage = Image::make($path)->resize(500,500, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $resizedImage->save(public_path("files/products/" . $slug . "/500x500".$filename));
+            $resizedImage->save(public_path("files/pages/" . $slug . "/500x500".$filename));
             $resizedImage = Image::make($path)->resize(1000,null, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
             ///for carousel
-            $resizedImage->save(public_path("files/products/" . $slug . "/1000w".$filename));
+            $resizedImage->save(public_path("files/pages/" . $slug . "/1000w".$filename));
               $icon = $filename;
    
               }
@@ -55,45 +55,55 @@ class ProductServices{
        }/// upload icon
    
    
-       public function upload_multi_files(Request $request,Product $product){
+       public function upload_multi_files(Request $request,Page $page){
            if ($request->hasFile('multiple_files')) {
            
                $files = $request->file('multiple_files');
-               $rank = ProductImage::where('product_id','=',$product->id)->count() +1;
+               $rank = PageImage::where('page_id','=',$page->id)->count() +1;
               
                  
                foreach ($files as $file) {
                    $ext = GeneralHelper::findExtension($file->getClientOriginalName());
                    if (in_array($ext, $this->allowed_array)) {
-                   $path = public_path("files/products/" . $product['slug']);
+                   $path = public_path("files/pages/" . $page['slug']);
                    $filename =  rand(1000,99999). "_" . date('YmdHis') . "." . GeneralHelper::findExtension($file->getClientOriginalName());
                    $file->move($path, $filename);
                   
-                   $path = public_path("files/products/" . $product['slug'] . "/" . $filename);
+                   $path = public_path("files/pages/" . $page['slug'] . "/" . $filename);
    
                   $resizedImage = Image::make($path)->resize(200, null, function ($constraint) {
                       $constraint->aspectRatio();
                   });
    
    
-                   $resizedImage->save(public_path("files/products/" . $product['slug'] . "/200".$filename));
+                   $resizedImage->save(public_path("files/pages/" . $page['slug'] . "/200".$filename));
                   $image200 ="200".$filename;
    
-                  $resizedImage = Image::make($path)->resize(50, null, function ($constraint) {
-                   $constraint->aspectRatio();
-               });
+                  $resizedImage = Image::make($path)->resize(150, null, function ($constraint) {
+                      $constraint->aspectRatio();
+                   });
+                   
    
+                $resizedImage->save(public_path("files/pages/" . $page['slug'] . "/150".$filename));
+
+
+                Log::channel('data_check')->info($page['title']."::".$page['id']);
+                         $image50 ="150".$filename;
+                         $pi = new PageImage();
+                         $pi->page_id = $page['id'];
+                         $pi->image = $filename;
+                         $pi->image200 = $image200;
+                         $pi->image50 = $image50;
+                         $pi->rank = $rank;
+                         $pi->save();
+                    //    PageImage::create([
+                    //        'page_id'=>$page['id'],
+                    //        'image'=>$filename,
+                    //        'image200'=> $image200,
+                    //        'image50'=> $image50,
+                    //        'rank'=>$rank
    
-                $resizedImage->save(public_path("files/products/" . $product['slug'] . "/50".$filename));
-               $image50 ="50".$filename;
-                       ProductImage::create([
-                           'product_id'=>$product['id'],
-                           'image'=>$filename,
-                           'image200'=> $image200,
-                           'image50'=> $image50,
-                               'rank'=>$rank
-   
-                       ]);
+                    //    ]);
                        $rank++;
                   }
                }
@@ -102,8 +112,8 @@ class ProductServices{
        }
          
    
-       public function deleteProduct(Product $product){
-           $dir = 'files/products/'.$product->slug."/";
+       public function deleteProduct(Page $page){
+           $dir = 'files/pages/'.$page->slug."/";
           if(is_dir($dir)){
            $files = scandir($dir);
            foreach ($files as $file) {
@@ -116,7 +126,7 @@ class ProductServices{
                }
            }
            rmdir($dir);
-           ProductImage::where('product_id','=',$product->id)->delete();
+           PageImage::where('page_id','=',$page->id)->delete();
           }
    
        }

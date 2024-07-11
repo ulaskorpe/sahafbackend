@@ -49,7 +49,7 @@
                         aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Site İçeriği</a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="fa fa-bars"></i><a href="{{route('site-data.index')}}">Sabit Bilgiler</a></li>
-                        <li><i class="fa fa-bars"></i><a href="{{route('categories.index','blog')}}">Sabit Sayfalar</a></li>
+                        <li><i class="fa fa-bars"></i><a href="{{route('pages.index')}}">Sabit Sayfalar</a></li>
                         <li><i class="fa fa-bars"></i><a href="{{route('categories.index','product')}}">Carousel</a></li>
                         <li><i class="fa fa-bars"></i><a href="{{route('categories.index','blog')}}">Promosyon Alanları</a></li>
                       

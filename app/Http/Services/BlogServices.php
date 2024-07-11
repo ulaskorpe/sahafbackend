@@ -36,7 +36,22 @@ class BlogServices{
 
 
             $resizedImage->save(public_path("files/blogs/" . $slug . "/100".$filename));
-           $icon ="100".$filename;
+
+            $resizedImage = Image::make($path)->resize(1000, 430, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+ 
+ 
+             $resizedImage->save(public_path("files/blogs/" . $slug . "/1000x430".$filename));
+
+             $resizedImage = Image::make($path)->resize(500, 300, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+ 
+ 
+             $resizedImage->save(public_path("files/blogs/" . $slug . "/500x300".$filename));
+
+           $icon = $filename;
 
            }
 

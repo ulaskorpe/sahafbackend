@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteDataController;
 
@@ -103,7 +104,7 @@ Route::group(['prefix'=>'admin-panel','middleware'=>\App\Http\Middleware\checkAd
             Route::post('/delete',[ProductController::class,'destroy'])->name('products-delete');
             Route::get('/edit/{slug}',[ProductController::class,'edit'])->name('products.edit');
             Route::post('/update',[ProductController::class,'update'])->name('products-update');
-            Route::get('/show-product-images/{product_id}/{image_id?}/{rank?}',[ProductController::class, 'show_product_images'])->name('show-blog-images');
+            Route::get('/show-product-images/{product_id}/{image_id?}/{rank?}',[ProductController::class, 'show_product_images'])->name('show-page-images');
             Route::get('/delete-product-image/{image_id}',[ProductController::class, 'delete_product_image'])->name('delete-product-images');
         });
 
@@ -118,7 +119,15 @@ Route::group(['prefix'=>'admin-panel','middleware'=>\App\Http\Middleware\checkAd
 
 
         Route::group(['prefix'=>'pages'],function(){
-            Route::get('/', [SiteDataController::class, 'index'])->name('site-data.index');
+            Route::get('/', [PageController::class, 'index'])->name('pages.index');
+            Route::get('/create', [PageController::class, 'create'])->name('pages.create');
+            Route::get('/check-slug/{slug}/{type?}/{id?}',[PageController::class, 'check_slug'])->name('pages-check-slug');
+            Route::post('/store',[PageController::class,'store'])->name('pages.store');
+            Route::get('/edit/{slug}',[PageController::class,'edit'])->name('pages.edit');
+            Route::post('/update',[PageController::class,'update'])->name('pages-update');
+            Route::get('/show-page-images/{page_id}/{image_id?}/{rank?}',[PageController::class, 'show_page_images'])->name('show-page-images');
+            Route::get('/delete-page-image/{image_id}',[PageController::class, 'delete_page_image'])->name('delete-page-images');
+            Route::post('/delete',[PageController::class,'destroy'])->name('pages-delete');
         });
 
       

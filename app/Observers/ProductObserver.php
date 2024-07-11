@@ -30,8 +30,8 @@ class ProductObserver
          
             $txt .= ($product['verified']) ? 'Ürününüz onaylandı ':'ürün onayınız kaldırıldı';
         }
-        Mail::to($product->user()->first()->email)->send(new ProductUpdatedMail($txt,'ürününüz güncellendi'));
-        Log::channel('data_check')->info($txt);
+      //  Mail::to($product->user()->first()->email)->send(new ProductUpdatedMail($txt,'ürününüz güncellendi'));
+    //        Log::channel('data_check')->info($txt);
     }
 
 }
