@@ -26,6 +26,7 @@ class BlogController extends Controller implements CrudControllerInterface
      */
     public function index()
     {
+        
         $blogs =Blog::with('category','user');
         $blogs =  $blogs->orderBy('updated_at','DESC')->get();
 

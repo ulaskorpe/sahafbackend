@@ -7,12 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    dear {{$name}},<br>
-    your logging credentials are :
-    <br>
-    admin code : {{$admin_code}}<br>
-    password : {{$password}}<br>
-
-    {{url('/login')}}
+    Sayın {{$name}},<br>
+    Kullanıcı kodunuz {{$code}}, <br>
+    Sahafsensin.com  kaydınızı tamamlamak için aşağıdaki linke tıklayınız :
+ 
+  <a href="{{$link}}" target="_blank">{{$link}}</a>  
 </body>
 </html>

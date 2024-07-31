@@ -24,7 +24,8 @@ class User extends Authenticatable
         'password',
         'admin_code',
         'email_verified_at',
-        'avatar'
+        'avatar',
+        'remember_token','user_code','username'
     ];
 
     /**
@@ -46,4 +47,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function permissions() 
+    {
+        return $this->belongsToMany(Permission::class, 'user_permission')->withPivot('value');
+    }
 }

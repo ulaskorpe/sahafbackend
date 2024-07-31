@@ -70,7 +70,7 @@
                 </a>
 
                 <div class="user-menu dropdown-menu">
-                    <a class="nav-link" href="{{route('profile')}}"><i class="fa fa- user"></i>Profilim</a>
+                    <a class="nav-link" href="{{route('profile')}}"><i class="fa fa- user"></i>Profilim ({{$admin_code}})</a>
 
                     <a class="nav-link" href="{{route('notifications')}}"><i class="fa fa- user"></i>Bildirimler <span class="count">13</span></a>
                  

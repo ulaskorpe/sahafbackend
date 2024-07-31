@@ -23,5 +23,18 @@
     <!-- Customized Bootstrap Stylesheet -->
  
     <link  rel="stylesheet"  href="{{url('front_assets/css/style.css')}}" >
-
+    <style>
+        .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-body img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>

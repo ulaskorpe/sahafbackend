@@ -343,11 +343,20 @@ return false;
 } 
 
  
+
+// var formData = new FormData(document.getElementById('product-form'));
+// //console.log(formData);
+// save(formData, '/admin-panel/products/update', '', '');
+ 
+// setTimeout(() => {
+//     window.open("/admin-panel/products/", "_self")
+// }, 2000);
+
 console.log(error);
  var formData = new FormData(document.getElementById('product-form'));
  //console.log(formData);
  $('#submit_button').prop('disabled',true);
- save(formData, '{{ route('products.store') }}', '', '');
+ save(formData, '/admin-panel/products/store', '', '');
  
 setTimeout(() => {
     window.open("/admin-panel/products/", "_self")

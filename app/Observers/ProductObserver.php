@@ -7,6 +7,7 @@ use App\Mail\ProductUpdatedMail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Product;
 use Illuminate\Support\Facades\Log;
+use App\Models\Category;
 
 class ProductObserver
 {
@@ -19,7 +20,12 @@ class ProductObserver
         $txt = $product['title'] ." isimli ürününüz sitemize eklenmiş ve onaylanmıştır";
     }
      
-           Mail::to($product->user()->first()->email)->send(new ProductUpdatedMail($txt,'ürününüz eklendi'));
+          // Mail::to($product->user()->first()->email)->send(new ProductUpdatedMail($txt,'ürününüz eklendi'));
+
+
+           $cat = Category::find($product['category_id']);
+           $cat->product_count = $cat['product_count']+1;
+           $cat->save();
 
          //  Log::channel('data_check')->info($txt."::".$product->user()->first()->email);
     }
@@ -30,7 +36,18 @@ class ProductObserver
          
             $txt .= ($product['verified']) ? 'Ürününüz onaylandı ':'ürün onayınız kaldırıldı';
         }
-      //  Mail::to($product->user()->first()->email)->send(new ProductUpdatedMail($txt,'ürününüz güncellendi'));
+        if($product->isDirty('category_id')){
+            $cat = Category::find($product['category_id']);
+            $cat->product_count = $cat['product_count']+1;
+            $cat->save();
+
+
+            $cat = Category::find($product->getOriginal('category_id'));
+            $cat->product_count = $cat['product_count']-1;
+            $cat->save();
+
+        }
+   //  Mail::to($product->user()->first()->email)->send(new ProductUpdatedMail($txt,'ürününüz güncellendi'));
     //        Log::channel('data_check')->info($txt);
     }
 

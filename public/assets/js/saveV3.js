@@ -1,4 +1,4 @@
-function save(formData,route,formID,btn,reload) {
+async function save(formData,route,formID,btn,reload) {
  
     $.ajax({
         
@@ -17,6 +17,7 @@ function save(formData,route,formID,btn,reload) {
                         icon: 'error',
                         confirmButtonText: 'Tamamdır'
                 });
+              
             }else{
                 Swal.fire({
                     title: 'Tebrikler',
@@ -27,11 +28,15 @@ function save(formData,route,formID,btn,reload) {
                 
             }
            
-           
+            console.log(reload);
+            
             if(reload){
             setTimeout(function() {
-                location.reload();
-            }, 2000);
+                //location.reload();
+               // alert(reload);
+                window.open(reload,'_self');
+            }, 3000);
+            
             }
         
         },

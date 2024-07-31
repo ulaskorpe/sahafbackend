@@ -14,17 +14,19 @@ class UserCreatedEmail extends Mailable
     use Queueable, SerializesModels;
 
         private $name;
-        private $admin_code; 
-        private $password; 
+        private $link; 
+        private $code; 
+   
 
     /**
      * Create a new message instance.
      */
-    public function __construct($name,$admin_code,$password)
+    public function __construct($name,$link,$code)
     {
         $this->name = $name;
-        $this->admin_code =$admin_code;
-        $this->password =$password;
+        $this->link =$link;
+        $this->code =$code;
+       
     }
 
     /**
@@ -33,7 +35,7 @@ class UserCreatedEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Welcome Email',
+            subject: 'SahafSensin\'e hoşgeldiniz',
         );
     }
 
@@ -46,9 +48,9 @@ class UserCreatedEmail extends Mailable
             view: 'email.user_created',
             with :[
                 'name'=> $this->name,
-                'admin_code'=>$this->admin_code,
-                'password'=>$this->password
-                 
+                'link'=>$this->link,
+                'code'=>$this->code,
+                
             ]
         );
     }

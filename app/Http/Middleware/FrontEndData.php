@@ -31,24 +31,13 @@ class FrontEndData
         foreach($site_data as $data ){
             $array[$data['key']] = $data['value'];
         }
-        $carousel = Product::select('title','icon','prologue','slug')
-        ->whereNotNull('verified')
-        ->inRandomOrder()->limit(3)->get();
-
-        $blogs = Blog::select('title','icon','prologue','slug')
-        ->inRandomOrder()->limit(2)->get();
-
-        $recent = Product:: whereNotNull('verified')
-        ->inRandomOrder()->limit(8)->get();
-
+     
         
 
 
        view()->share(['categories'=> $this->frontEndServices->getCategories(),'site_data'=>$array
        ,'popular_cats'=>$this->frontEndServices->popularCategories()
-       ,'blogs'=>$blogs
-       ,'recent'=>$recent
-       ,'carousel'=>$carousel]);
+       ]);
        return $next($request);
     }
 }

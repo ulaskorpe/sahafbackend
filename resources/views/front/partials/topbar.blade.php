@@ -10,11 +10,18 @@
         </div>
         <div class="col-lg-6 text-center text-lg-right">
             <div class="d-inline-flex align-items-center">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Hesabım</button>
+                <div class="btn-group bg-primary">
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
+                        <i class="fas fa-user "></i>
+                        Hesabım</button>
+
                     <div class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" type="button">Kullanıcı Girişi</button>
-                        <button class="dropdown-item" type="button">Kayıt Ol</button>
+                        @if(empty(session('user_code')))
+                        <button class="dropdown-item" type="button" onclick="window.open('{{route('user-login')}}','_self')">Kullanıcı Girişi</button>
+                        <button class="dropdown-item" type="button" onclick="window.open('{{route('user-register')}}','_self')">Kayıt Ol</button>
+                        @else
+
+                        @endif
                    
                     </div>
                 </div>
@@ -51,7 +58,7 @@
     </div>
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
         <div class="col-lg-4">
-            <a href="" class="text-decoration-none">
+            <a href="{{route('index')}}" class="text-decoration-none">
                 <span class="h1 text-uppercase text-primary bg-dark px-2">Sahaf</span>
                 <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Sensİn</span>
             </a>
@@ -69,8 +76,10 @@
             </form>
         </div>
         <div class="col-lg-4 col-6 text-right">
+            @if(false)
             <p class="m-0">İletişim</p>
             <h5 class="m-0">+0212 345 6789</h5>
+            @endif
         </div>
     </div>
 </div>

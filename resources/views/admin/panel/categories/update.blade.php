@@ -257,7 +257,7 @@ console.log(formData);
 save(formData, '/admin-panel/categories/update', '', '');
  
 setTimeout(() => {
-    window.open("/admin-panel/categories/", "_self")
+    window.open("/admin-panel/categories/{{$category['type']}}", "_self")
 }, 2000);
 
 }

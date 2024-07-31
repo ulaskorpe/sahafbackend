@@ -352,7 +352,8 @@ return false;
 
 //console.log(error);
 var formData = new FormData(document.getElementById('blog-form'));
-console.log(formData);
+//console.log(formData);
+$('#submit_button').prop('disabled',true);
 save(formData, '/admin-panel/blogs/update', '', '');
  
 setTimeout(() => {

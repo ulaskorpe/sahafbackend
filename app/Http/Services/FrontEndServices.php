@@ -2,9 +2,14 @@
 
 namespace App\Http\Services;
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\User;
+use App\Traits\CapthaTrait;
 
 class FrontEndServices
 {
+
+    use CapthaTrait;
     public function getCategories()
     {
 
@@ -16,6 +21,7 @@ class FrontEndServices
 
     public function popularCategories(){
         $categories = Category::where('type', 'product')
+        ->where('product_count','>',0)
         ->orderBy('product_count', 'DESC')
         ->limit(8)
         ->get();
@@ -27,4 +33,20 @@ class FrontEndServices
 
     return $categories;
     }
+
+    public function pick_items($count = 4){
+        return Product::whereNotNull('verified')->inRandomOrder()->take($count)->get();
+    }
+
+    public function generateUserCode(){
+        $ch=true;
+        while($ch){
+            $token = rand(100000,999999);
+            $user = User::where('user_code','=',$token)->first();
+            $ch = (!empty($user))?true:false;
+        }
+        return $token;
+    }
+    
+
 }

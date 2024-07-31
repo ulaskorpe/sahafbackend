@@ -102,6 +102,23 @@ class GeneralHelper extends Controller
     }
 
 
+    public static function createSlug($string) {
+        // Convert to lowercase
+        $string = strtolower($string);
+        
+        // Replace spaces and non-alphanumeric characters with hyphens
+        $string = preg_replace('/[^a-z0-9-]/', '-', $string);
+        
+        // Replace multiple hyphens with a single hyphen
+        $string = preg_replace('/-+/', '-', $string);
+        
+        // Trim hyphens from the beginning and end
+        $string = trim($string, '-');
+        
+        return $string;
+    }
+
+
 
 
     

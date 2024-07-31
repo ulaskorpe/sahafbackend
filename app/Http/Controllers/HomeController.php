@@ -3,57 +3,75 @@
 namespace App\Http\Controllers;
 use Auth;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Models\Category;
-use App\Http\Requests\LoginUserRequest;
+//use Illuminate\Http\Request;
+use App\Models\Page;
+//use App\Http\Requests\LoginUserRequest;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
+// use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Mail;
 
-use App\Mail\ProductUpdatedMail;
-use App\Mail\UserCreatedEmail;
+// use App\Mail\ProductUpdatedMail;
+// use App\Mail\UserCreatedEmail;
 use App\Traits\HttpResponses;
+use App\Models\Product;
+use App\Models\Blog;
 class HomeController extends Controller
 {
 
     use HttpResponses;
     public function index(){
-         //Mail::to('ulas@asd.com')->send(new ProductUpdatedMail('this is your life','ürününüz eklendi'));
-        //Mail::to('ulas@asdf.com')->send(new UserCreatedEmail('ulaş','13213546','134132'));
-        return view('front.index' );
+        $carousel = Product::select('title','icon','prologue','slug')
+        ->whereNotNull('verified')
+        ->inRandomOrder()->limit(3)->get();
+
+        $blogs = Blog::select('title','icon','prologue','slug')
+        ->inRandomOrder()->limit(2)->get();
+
+        $recent = Product:: whereNotNull('verified')
+        ->inRandomOrder()->limit(8)->get();
+
+        return view('front.index' , ['blogs'=>$blogs
+        ,'recent'=>$recent
+        ,'carousel'=>$carousel]);
         
            /// return response()->redirectTo('/login');
     }
 
-    public function category($slug){
+    public function category_detail($slug,$id){
         return $slug;
     }
 
-    public function remember_me(){
-        return view('admin.call_me');
+    public function product_detail($slug,$id){
+        return $slug;
     }
 
-    public function test(Request $request){
-        return response()->json(["ok"],200);
+    public function product_list($category_slug=null,$key=null,$page=0){
+        return $category_slug;
     }
+    public function blogs($key=null,$page=0){
+        return $key;
+    }
+
+    public function blog_detail($slug,$id){
+        return $slug;
+    }
+
+    public function fetch_page($page_id){
+
+        $page = Page::with('images')->find($page_id);
+        return response()->json(['title'=>$page['title'],
+        'body'=>$page['content']
+        ,'icon'=>$page['icon'],
+        'slug'=>$page['slug'],
+        'images'=>$page->images()->get()]);
+    }
+ 
 
     private function createToken(User $user){
         $token = $user->createToken('API Token of'.$user->name)->plainTextToken;
         Session::put('token',$token);
         return $token;
     }
-
-    public function login_post(Request $request){
-        return json_encode([ $request ]);
-      //  return response()->json("ok");
-        //Log::channel('data_check')->info($request->admin_code);
-        if(!Auth::attempt(['admin_code' => $request->admin_code, 'password' => $request->password])){
-            return $this->error('','no such admin',401);
-        }
-            
-        $user = User::where('admin_code',$request->admin_code)->first();
-       
-      return  $this->success(['user'=>$user,'token'=>$this->createToken($user)]);
-    }
+ 
 
 }
