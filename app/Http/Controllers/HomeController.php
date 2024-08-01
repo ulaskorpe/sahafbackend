@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use App\Traits\HttpResponses;
 use App\Models\Product;
 use App\Models\Blog;
+use App\Models\FAQ;
 class HomeController extends Controller
 {
 
@@ -54,6 +55,19 @@ class HomeController extends Controller
 
     public function blog_detail($slug,$id){
         return $slug;
+    }
+    public function faqs(){
+        return view('front.sss');
+    }
+    public function faqin($q=''){
+ 
+        $faqs = FAQ::where('id','>',0);
+        if($q!=''){
+            $faqs = $faqs->where('question','LIKE',"%{$q}%");
+        }
+       $faqs = $faqs->orderBy('rank')->get();
+         
+        return view('front.partials.faqin',['faqs'=>$faqs]);
     }
 
     public function fetch_page($page_id){

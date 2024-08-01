@@ -37,4 +37,5 @@
             margin-right: auto;
         }
     </style>
+    @yield('css')
 </head>

@@ -2,7 +2,7 @@
     <h5 class="section-title position-relative   mb-3"><span class="bg-secondary pr-3">ÜYE GİRİŞ</span></h5>
     <div class="bg-light p-30 mb-5">
 
-        <form class="form" id="login-form" name="login-form" action='{{route('login_user')}}'
+        <form class="form" id="forget-form" name="forget-form" action='{{route('forget_pw_post')}}'
         method="post" enctype="multipart/form-data">
         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
         <div class="row">
@@ -34,7 +34,7 @@
               
             </div>
             <div class="col-md-12 form-group d-flex justify-content-center">
-                <button class="btn btn-primary font-weight-bold py-3 w-50" onclick="fogetFormSubmit()" id="submit_button">Şifrem Eposta Adresime Gelsin</button>
+                <button class="btn btn-primary font-weight-bold py-3 w-50" onclick="forgetFormSubmit()" id="submit_button">Şifrem Eposta Adresime Gelsin</button>
             </div>
             <div class="col-md-12 form-group d-flex justify-content-center">
                

@@ -32,18 +32,7 @@
                         @endif
                     @endforeach
 
-
-                    @if(false)
-                   
-                    <a href="" class="nav-item nav-link">Jeans</a>
-                    <a href="" class="nav-item nav-link">Swimwear</a>
-                    <a href="" class="nav-item nav-link">Sleepwear</a>
-                    <a href="" class="nav-item nav-link">Sportswear</a>
-                    <a href="" class="nav-item nav-link">Jumpsuits</a>
-                    <a href="" class="nav-item nav-link">Blazers</a>
-                    <a href="" class="nav-item nav-link">Jackets</a>
-                    <a href="" class="nav-item nav-link">Shoes</a>
-                    @endif
+ 
                 </div>
             </nav>
 
@@ -63,20 +52,18 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="shop.html" class="nav-item nav-link">Shop</a>
-                        <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                        <a href="index.html" class="nav-item nav-link @if(false)active @endif">Mağazalar</a>
+                        <a href="shop.html" class="nav-item nav-link">Son Eklenenler</a>
+                        <a href="detail.html" class="nav-item nav-link">Gündem</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Bloglar <i class="fa fa-angle-down mt-1"></i></a>
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                @foreach($blog_categories as $blog_cat)
+                                <a href="cart.html" class="dropdown-item">{{$blog_cat['name']}}</a>
+                                @endforeach
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                  
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <a href="" class="btn px-0">

@@ -2,10 +2,10 @@
     <div class="row bg-secondary py-1 px-xl-5">
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center h-100">
-                <a class="text-body mr-3" href="">Hakkımızda</a>
-                <a class="text-body mr-3" href="">İletişim</a>
-                <a class="text-body mr-3" href="">Yardım</a>
-                <a class="text-body mr-3" href="">SSS</a>
+                <a class="text-body mr-3" href="{{route('about-us')}}">Hakkımızda</a>
+                <a class="text-body mr-3" href="{{route('contact')}}">İletişim</a>
+                <a class="text-body mr-3" href="{{route('help-me')}}">Yardım</a>
+                <a class="text-body mr-3" href="{{route('sss')}}">SSS</a>
             </div>
         </div>
         <div class="col-lg-6 text-center text-lg-right">
@@ -21,6 +21,19 @@
                         <button class="dropdown-item" type="button" onclick="window.open('{{route('user-register')}}','_self')">Kayıt Ol</button>
                         @else
 
+
+                    <form class="form" id="logout-form" name="logout-form" action="{{ route('logout_user') }}"
+                    method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+                    
+                    </form>
+                        <button class="dropdown-item" type="button"  >Hesabım</button>
+                        <button class="dropdown-item" type="button"  >Ürünlerim</button>
+                        <button class="dropdown-item" type="button"  >İzlediklerim</button>
+                        <button class="dropdown-item" type="button"  >Taleplerim</button>
+                        <button class="dropdown-item" type="button"  >Mağazam</button>
+      
+                        <button class="dropdown-item" type="button"  onclick="logoutfx()">Çıkış Yap</button>
                         @endif
                    
                     </div>
@@ -66,9 +79,9 @@
         <div class="col-lg-4 col-6 text-left">
             <form action="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Hazine arıyorum ...">
+                    <input type="text" class="form-control" id="treasure_key" placeholder="Hazine arıyorum ...">
                     <div class="input-group-append">
-                        <span class="input-group-text bg-transparent text-primary">
+                        <span class="input-group-text bg-transparent text-primary" style="cursor: pointer" onclick="treasure_search()">
                             <i class="fa fa-search"></i>
                         </span>
                     </div>

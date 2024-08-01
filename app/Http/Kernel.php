@@ -86,6 +86,7 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware= [
         'checkAdmin' => \App\Http\Middleware\checkAdmin::class,
+        'checkUser' => \App\Http\Middleware\checkUser::class,
        'frontenddata'=> \App\Http\Middleware\FrontEndData::class
     ];
 }

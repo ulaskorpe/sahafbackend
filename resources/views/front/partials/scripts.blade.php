@@ -33,4 +33,23 @@ async function fetch_page(page_id){
      
 }
 
+
+
+function logoutfx(){
+            Swal.fire({
+            title: 'Çıkış yapılacak eminmisiniz',
+         
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet!',
+            cancelButtonText: 'Hayır'
+        }).then((result) => {
+            // If confirmed
+            if (result.isConfirmed) {
+                    $('#logout-form').submit();
+            }
+        });
+        }
 </script>

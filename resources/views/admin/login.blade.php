@@ -111,7 +111,7 @@
             }
             //function save(formData,route,formID,btn,reload) {
             var formData = new FormData(this);
-            save(formData,'{{ route('admin-login-post') }}','login-form','',true);
+            save(formData,'{{ route('admin-login-post') }}','login-form','','/admin-panel');
 
         });
     </script>

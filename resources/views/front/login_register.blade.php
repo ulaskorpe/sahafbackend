@@ -58,10 +58,47 @@ $('#login-form').submit(function(e) {
 });
 
 
-async function loginFormSubmit() {
+async function forgetFormSubmit() {
 
 let error = false;
-var formData = new FormData(document.getElementById('register-form'));
+
+if ($('#username_or_email').val() == '') {
+    $('#username_or_email').focus();
+    Swal.fire({
+        icon: 'error',
+        text: 'Kullanıcı adınızı ya da kayıt olduğunuz eposta adresini giriniz'
+    });
+    error = true;
+    return false;
+ }
+
+
+if ($('#captha').val() == '') {
+               
+               $('#captha').focus();
+               Swal.fire({
+                   icon: 'error',
+                   text: 'Lütfen resimdeki yazıyı doğrulayınız'
+               });
+            
+               error = true;
+               return false;
+           }else if(($('#captha').val() != '{{$text}}') ){
+
+            $('#captha').focus();
+            $('#captha').val('');
+               Swal.fire({
+                   icon: 'error',
+                   text: 'Lütfen resimdeki yazıyı yanlış girdiniz'
+               });
+            
+               error = true;
+               return false;
+           }
+
+
+
+var formData = new FormData(document.getElementById('forget-form'));
 $('#submit_button').prop('disabled',true);
   await save(formData, '/forget-pw-post', '', '','{{url('/')}}');
  

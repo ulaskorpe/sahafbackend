@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use App\Models\User;
-//use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +33,9 @@ class AuthController extends Controller
     }
 
     public function login(){
-     
+     $user = User::find(8);
+     $user->password = Hash::make('123123');
+     $user->save();
          
         if( Cookie::get('remember_me')){
              

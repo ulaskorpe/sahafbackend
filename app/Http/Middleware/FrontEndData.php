@@ -36,7 +36,7 @@ class FrontEndData
 
 
        view()->share(['categories'=> $this->frontEndServices->getCategories(),'site_data'=>$array
-       ,'popular_cats'=>$this->frontEndServices->popularCategories()
+       ,'popular_cats'=>$this->frontEndServices->popularCategories(),'blog_categories'=>$this->frontEndServices->blogCategories()
        ]);
        return $next($request);
     }

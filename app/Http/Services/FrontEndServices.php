@@ -19,6 +19,14 @@ class FrontEndServices
         ->orderBy('rank')->get();
     }
 
+    public function blogCategories()
+    {
+       
+        return Category::with('subcategory')->where('parent_id','=',0)
+        ->where('type','=','blog')
+        ->orderBy('rank')->get();
+    }
+
     public function popularCategories(){
         $categories = Category::where('type', 'product')
         ->where('product_count','>',0)

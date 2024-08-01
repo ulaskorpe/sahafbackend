@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Helpers\GeneralHelper;
 use App\Http\Services\FrontEndServices;
+use App\Mail\ForgetPasswordMail;
 use Illuminate\Http\Request;
 //use App\Models\Product;
 use Illuminate\Support\Facades\Session;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 //use App\Models\Permission;
  
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cookie;
@@ -29,6 +32,21 @@ class UserController extends Controller
 
     use HttpResponses;
 
+    private function checkCookie(){
+        if( Cookie::get('remember_me')){
+             
+            $user = User::where('remember_token', Cookie::get('remember_me'))->first();
+       
+            if ($user) {
+            Auth::login($user);
+
+                Session::put('user_code',$user['user_code']);
+                return redirect('/');
+            }
+              
+        }
+    }
+
     public function forget_password(){
         if(!empty(Session::get('user_code'))){
             return redirect(route('index'));
@@ -39,7 +57,13 @@ class UserController extends Controller
         ,'products'=>$this->service->pick_items(),'img'=>$data['img'],'text'=>$data['text']]);
         }
     }
+
+
+
+
+
     public function login(){
+        $this->checkCookie();
         if(!empty(Session::get('user_code'))){
             return redirect(route('index'));
         }else{
@@ -50,7 +74,7 @@ class UserController extends Controller
     }
 
     public function register(){
-
+        $this->checkCookie();
         if(!empty(Session::get('user_code'))){
         
             return redirect(route('index'));
@@ -88,25 +112,99 @@ class UserController extends Controller
     }
 
     public function login_user(Request $request){
-        if(!Auth::attempt(['admin_code' =>(integer)$request->admin_code, 'password' =>(string)$request->password])){
-            return $this->error('','no such admin',200);
-        }
-        $remember=0;
-        $user = User::where('admin_code',$request->admin_code)->first();
- 
-        Session::put('admin_code',$user['admin_code']);
+
+         
+        $user = User::where('email', $request['username_or_email'])->where('user_code','>',0)->first();
+           if(empty($user)){
+            $user = User::where('username', $request['username_or_email'])->where('user_code','>',0)->first();
+            if(empty($user)){
+                $user = User::where('user_code', $request['username_or_email'])->where('user_code','>',0)->first();
+               }
+           }
+       // $user = User::where('admin_code',$request->admin_code)->first();
+
+       if ($user && Hash::check($request['password'], $user->password)) {
+        Auth::attempt(['user_code' =>(integer)$user['user_code'], 'password' =>(string)$request->password]);
+        Session::put('user_code',$user['user_code']);
         if(!empty($request['remember_me'])) {
                 $rememberToken = Str::random(60); // Generate a random token
-                  Cookie::queue('remember_me', $rememberToken, 60*24*30);
+                 
+                //  return Cookie::get('remember_me');
+
                 $user->remember_token = $rememberToken;
                 $user->save();
+
+                Cookie::queue('remember_me', $rememberToken, 60*24*30);
                // $remember=$request['remember_me'];
             }
-        return  $this->success(['user'=>Auth::user(),'token'=>$this->createToken($user)],"Giriş Başarılı" ,200);
+
+        return  $this->success(['user'=>Auth::user()],"Giriş Başarılı" ,200);
+
+        
+    } else {
+        // Authentication failed
+        return response()->json(['message' => 'Invalid credentials'], 401);
+    }
+
+          
+       
+
+    }
+
+
+    public function forget_pw_post(Request $request){
+        // if(!Auth::attempt(['username' =>(string)$request->username_or_email, 'password' =>(string)$request->password])){
+        //     if(!Auth::attempt(['email' =>(string)$request->username_or_email, 'password' =>(string)$request->password])){
+        //         if(!Auth::attempt(['user_code' =>(integer)$request->username_or_email, 'password' =>(string)$request->password])){
+        //             return $this->error('','böyle bir kullanıcı yok',200);
+        //         }
+        //     }
+        // }
+       
+           // $user = User::where('email','=',$request['username_or_email'])
+ 
+           $user = User::where('email', $request['username_or_email'])->first();
+           if(empty($user)){
+            $user = User::where('username', $request['username_or_email'])->first();
+            if(empty($user)){
+                $user = User::where('user_code', $request['username_or_email'])->first();
+               }
+           }
+ 
+
+           if(!empty($user)){
+            
+            $pw = GeneralHelper::randomPassword(8,1);
+
+            
+            $user->password = Hash::make($pw);
+            $user->save();
+
+
+            Mail::to($user['email'])->send(new ForgetPasswordMail($user['name'],$pw));
+            return  $this->success('',"Yeni Şifre ".$user['email']." adresinize gönderildi" ,200);
+           }else{
+            return $this->error('','böyle bir kullanıcı yok',200);
+           }
+        
 
     }
     public function confirm_user($token){
-        return $token;
+        $msg = "Böyle bir kullanıcı bulunamadı";
+        $user = User::where('remember_token','=',$token)->first();
+        if(!empty($user)){
+            if(empty($user['email_verified_at'])){
+                $msg = "Katılımınız için teşekkür ederiz, üyeliğiniz tamamlandı";
+                $user->email_verified_at = now();
+             
+                $user->save();
+               Auth::login($user);
+                Session::put('user_code',$user['user_code']);
+            }else{
+                $msg = "Üyeliğiniz daha önce aktive edilmiş, lütfen giriş yapınız.";
+            }
+        }
+        return view('front.confirm',['msg'=>$msg]);
     }
 
     public function email_check($email){
@@ -122,7 +220,12 @@ class UserController extends Controller
             return response()->json($err);
     
         }
-
+        public function logout(Request $request){
+            Cookie::queue('remember_me', '',0);
+            Auth::logout();
+            Session::forget('user_code');
+            return redirect('/');
+        }
         public function username_check($username){
             $err = "ok";
             if (strlen($username)<6) {
