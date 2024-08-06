@@ -11,7 +11,7 @@
                     <h3 class="text-white mb-3"> {{$blogs[$i]['title']}}</h3>
                     <h6 class="text-white text-uppercase">{{$blogs[$i]['prologue']}}</h6>
                   
-                    <a href="" class="btn btn-primary">İncele</a>
+                    <a href="{{ route('blog_detail', ['slug' => $blogs[$i]['slug'], 'id' => $blogs[$i]['id']]) }}" class="btn btn-primary">İncele</a>
                 </div>
             </div>
         </div>

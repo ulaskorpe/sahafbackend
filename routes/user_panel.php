@@ -16,20 +16,22 @@ Route::middleware(['frontenddata'])->group(function () {
     Route::get('/sifremi-unuttum',[UserController::class, 'forget_password'])->name('user-forget-pw');
     Route::get('/kayit-ol',[UserController::class, 'register'])->name('user-register');
     Route::get('/all-blog/{key?}/{page?}',[HomeController::class, 'blogs']);
-    Route::get('/product/{slug}/{id}',[HomeController::class, 'product_detail']);
-    Route::get('/category/{slug}/{id}',[HomeController::class, 'category_detail']) ;
+
+    Route::get('/kategori-detay/{slug}',[HomeController::class, 'category_detail'])->name('category_detail') ;
     Route::get('/confirm/{token}',[UserController::class, 'confirm_user'])->name('confirm_user');
-    Route::get('/urun-detay/{slug}',[ProductController::class, 'product_detail'])->name('product_detail');
-    Route::get('/urun-detay/{slug}',[BlogController::class, 'blog_detail'])->name('blog_detail');
+    Route::get('/urun-detay/{slug}/{id}',[ProductController::class, 'product_detail'])->name('product_detail');
+    Route::get('/blog-detay/{slug}/{id}',[BlogController::class, 'blog_detail'])->name('blog_detail');
     Route::get('/sss',[HomeController::class, 'faqs'])->name('sss');
     
     Route::get('/hakkimizda',[HomeController::class, 'about'])->name('about-us');
     Route::get('/yardim',[HomeController::class, 'help'])->name('help-me');
     Route::get('/iletisim',[ContactController::class, 'contact'])->name('contact');
     Route::post('/iletisim-post',[ContactController::class, 'contact_post'])->name('contact_post');
+    Route::group(['middleware'=>\App\Http\Middleware\checkUser::class],function (){
+        Route::post('/make-offer',[ProductController::class, 'make_offer'])->name('make_offer');
 
 
-
+    });
 });
 
 Route::get('/faqin/{key?}',[HomeController::class, 'faqin'])->name('faqin');

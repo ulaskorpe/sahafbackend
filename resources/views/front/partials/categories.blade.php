@@ -14,10 +14,11 @@
                         @endif
                     </div>
                     <div class="flex-fill pl-3">
-                        <h6>
+                        <h6><a href="{{route('category_detail',$cat['slug'])}}" style="color:black">
                             @foreach ($cat->parent_tree as $parent)
                              {{ $parent->name }}  @if($parent['id'] != $cat['id']) > @endif
                         @endforeach
+                            </a>
                              </h6>
                         <small class="text-body">{{$cat['product_count']}} Ürün</small>
                     </div>

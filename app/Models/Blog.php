@@ -11,7 +11,10 @@ class Blog extends Model
         protected $table = 'blogs';
         protected $fillable = ['title', 'icon','blog','prologue','slug','category_id','user_id','youtube_link'];
     
-      
+        public function keywords()
+        {
+            return $this->belongsToMany(Keyword::class, 'keywordables', 'blog_id', 'keyword_id');
+        }
         public function images()
         {
             return $this->hasMany(\App\Models\BlogImage::class, 'blog_id');

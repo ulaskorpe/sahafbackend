@@ -10,14 +10,17 @@
                     style="height: 300px;width:auto"
                     alt="">
                     <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                        <a class="btn btn-outline-dark btn-square" href="#" onclick="add_to_chart({{$pr['id']}})"><i class="fa fa-shopping-cart"></i></a>
+                        <a class="btn btn-outline-dark btn-square" href="#" onclick="add_to_favorites({{$pr['id']}})"><i class="far fa-heart"></i></a>
+                        @if(false)
                         <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                         <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                        @endif
+                        
                     </div>
                 </div>
                 <div class="text-center py-4">
-                    <a class="h6 text-decoration-none text-truncate" href="">{{$pr['title']}}</a>
+                    <a class="h6 text-decoration-none text-truncate" href="{{route('product_detail',[$pr['slug'],$pr['id']])}}">{{$pr['title']}}</a>
                     <div class="d-flex align-items-center justify-content-center mt-2">
                         <h5>{{$pr['current_price']}} &#8378;</h5><h6 class="text-muted ml-2"><del>{{$pr['start_price']}} &#8378;</del></h6>
                     </div>

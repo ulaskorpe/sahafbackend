@@ -47,8 +47,16 @@ class ProductObserver
             $cat->save();
 
         }
+
+        if($product->isDirty('winner_id')){
+
+        }
    //  Mail::to($product->user()->first()->email)->send(new ProductUpdatedMail($txt,'ürününüz güncellendi'));
     //        Log::channel('data_check')->info($txt);
     }
 
+    public function updated(Product $product){
+
+    }
+ 
 }

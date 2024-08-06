@@ -76,8 +76,9 @@ Route::group(['prefix'=>'admin-panel','middleware'=>\App\Http\Middleware\checkAd
             Route::get('/show-image/{type}/{id}',[ProductController::class,'show_image'])->name('show-image');
             Route::post('/store',[ProductController::class,'store'])->name('products.store');
             Route::post('/delete',[ProductController::class,'destroy'])->name('products-delete');
-            Route::get('/edit/{slug}',[ProductController::class,'edit'])->name('products.edit');
+            Route::get('/edit/{id}/{tab?}',[ProductController::class,'edit'])->name('products.edit');
             Route::post('/update',[ProductController::class,'update'])->name('products-update');
+            Route::post('/update-product-images',[ProductController::class,'update_product_images'])->name('update-product-images');
             Route::get('/show-product-images/{product_id}/{image_id?}/{rank?}',[ProductController::class, 'show_product_images'])->name('show-page-images');
             Route::get('/delete-product-image/{image_id}',[ProductController::class, 'delete_product_image'])->name('delete-product-images');
         });

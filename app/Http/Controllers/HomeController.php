@@ -21,13 +21,14 @@ class HomeController extends Controller
 
     use HttpResponses;
     public function index(){
-        $carousel = Product::select('title','icon','prologue','slug')
+        $carousel = Product::select('id','title','icon','prologue','slug')
         ->whereNotNull('verified')
         ->inRandomOrder()->limit(3)->get();
 
-        $blogs = Blog::select('title','icon','prologue','slug')
+        $blogs = Blog::select('title','icon','prologue','slug','id')
         ->inRandomOrder()->limit(2)->get();
 
+ 
         $recent = Product:: whereNotNull('verified')
         ->inRandomOrder()->limit(8)->get();
 

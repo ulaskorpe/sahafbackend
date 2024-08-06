@@ -13,13 +13,24 @@ class Product extends Model
     ,'slug','category_id','user_id','youtube_link','verified','verified_by',
     'start_price'
     ,'buy_now_price','current_price','bid_price','winner_id'];
-
+    public function bids()
+    {
+        return $this->hasMany(\App\Models\ProductBid::class, 'product_id');
+    }
   
     public function images()
     {
         return $this->hasMany(\App\Models\ProductImage::class, 'product_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(\App\Models\Comment::class, 'product_id');
+    }
+    public function keywords()
+    {
+        return $this->belongsToMany(Keyword::class, 'keywordables', 'product_id', 'keyword_id');
+    }
     public function category()
     {
         return $this->belongsTo(\App\Models\Category::class, 'category_id');
@@ -43,7 +54,7 @@ class Product extends Model
         return $this->morphMany(SiteItem::class, 'itemable');
     }
 
-    public function bidders(){
-        return $this->hasMany(\App\Models\ProductImage::class, 'product_id');
-    }
+ 
+
+ 
 }

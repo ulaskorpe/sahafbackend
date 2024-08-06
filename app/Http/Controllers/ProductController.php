@@ -99,11 +99,13 @@ class ProductController extends Controller implements CrudControllerInterface
     public function show($id){
 
     }
-    public function edit($id){
+    public function edit($id,$tab=0){
         $product = Product::with('images','user','verified_by')->find($id);
         
  
-        return view('admin.panel.products.update',['product'=>$product,'product_txt'=>str_replace("\"","'",($product['description'])),'youtube_link'=>  (!empty($product['youtube_link'])) ? GeneralHelper::makeYouTube($product['youtube_link']) : '' ]);
+        return view('admin.panel.products.update',['product'=>$product
+        ,'tab'=>$tab
+        ,'product_txt'=>str_replace("\"","'",($product['description'])),'youtube_link'=>  (!empty($product['youtube_link'])) ? GeneralHelper::makeYouTube($product['youtube_link']) : '' ]);
     }
     public function update(Request $request ){
         try{
@@ -134,17 +136,27 @@ class ProductController extends Controller implements CrudControllerInterface
           
             $product->prologue = $request['prologue'];
              $product->save();
-         
- 
-         
-        $this->service->upload_multi_files($request,$product);
-          
+     
           return  $this->success([''],"Ürün Güncellendi" ,200);
         }catch (Exception $e){
            // return response()->json(['error' => $e->getMessage()], 500);
             return  $this->error([''], $e->getMessage() ,500);
         } 
     }
+
+    public function update_product_images(Request $request){
+        try{
+            $product = Product::find($request['id']);
+          
+            $this->service->upload_multi_files($request,$product);
+          
+          return  $this->success([''],"Ürün resimleri Güncellendi" ,200);
+        }catch (Exception $e){
+           // return response()->json(['error' => $e->getMessage()], 500);
+            return  $this->error([''], $e->getMessage() ,500);
+        } 
+    }
+
     public function destroy(Request $request)
     {
    

@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductBid extends Model
+class Comment extends Model
 {
     use HasFactory,SoftDeletes;
-
-    protected $table= 'product_bids';
-    protected $fillable = ['user_id','product_id','bid_price'];
-
+    protected $table = 'comments';
+    protected $fillable = ['user_id','product_id','verified','comment'];
 
     public function user()
     {
@@ -21,6 +19,6 @@ class ProductBid extends Model
 
     public function product()
     {
-        return $this->belongsTo(\App\Models\User::class, 'product_id');
+        return $this->belongsTo(\App\Models\Product::class, 'product_id');
     }
 }

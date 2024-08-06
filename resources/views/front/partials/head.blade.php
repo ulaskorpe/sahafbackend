@@ -17,12 +17,17 @@
 
     <!-- Libraries Stylesheet -->
  
-    <link href="{{url('front_assets/lib/owlcarousel/assets/owl.carousel.min.css')}}" >
-    <link href="{{url('front_assets/lib/animate/animate.min.css')}}"  >
+ 
+    <link href="{{url('front_assets/lib/animate/animate.min.css')}}" rel="stylesheet">
+    <link href="{{url('front_assets/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{url('front_assets/css/style.css')}}" rel="stylesheet">
+
  
-    <link  rel="stylesheet"  href="{{url('front_assets/css/style.css')}}" >
+   
+ 
+ 
     <style>
         .modal-dialog-centered {
             display: flex;

@@ -1,5 +1,5 @@
 <div class="container-fluid pt-5 pb-3">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Popüler ürünler</span></h2>
+    <h2 class="section-title position-relative   mx-xl-5 mb-4"><span class="bg-secondary pr-3">@if(empty($product)) Popüler Ürünler @else İlgilinizi Çekebilir @endif</span></h2>
     <div class="row px-xl-5">
         @foreach($recent as $pr)
                 @include("front.partials.product_box_small")

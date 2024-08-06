@@ -9,205 +9,66 @@
 
 @endsection
 @section('main')
- 
-    <div class="breadcrumbs">
-        <div class="breadcrumbs-inner">
-            <div class="row m-0">
-                <div class="col-sm-4">
-                    <div class="page-header float-left">
-                        <div class="page-title">
-                            <h1>Ürün Güncelle</h1>
-                        </div>
+
+<div class="default-tab">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link @if($tab==0) active show @endif" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Ürün Bilgisi</a>
+            <a class="nav-item nav-link @if($tab==1) active show @endif" id="nav-images-tab" data-toggle="tab" href="#nav-images" role="tab" aria-controls="nav-images" aria-selected="false">Ürün Resimler</a>
+            <a class="nav-item nav-link @if($tab==2) active show @endif" id="nav-comments-tab" data-toggle="tab" href="#nav-comments" role="tab" aria-controls="nav-comments" aria-selected="false">Yorumlar</a>
+            <a class="nav-item nav-link @if($tab==3) active show @endif" id="nav-keywords-tab" data-toggle="tab" href="#nav-keywords" role="tab" aria-controls="nav-keywords" aria-selected="false">Anahtar Kelimeler</a>
+            <a class="nav-item nav-link @if($tab==4) active show @endif" id="nav-bid-tab" data-toggle="tab" href="#nav-bid" role="tab" aria-controls="nav-bid" aria-selected="false">Teklif Verenler</a>
+        </div>
+    </nav>
+    <div class="tab-content pl-3 pt-2" id="nav-tabContent">
+        <div class="tab-pane fade @if($tab==0) active show @endif" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          @include("admin.panel.products.product_info")
+        </div>
+        <div class="tab-pane fade @if($tab==1) active show @endif" id="nav-images" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="row">
+                <div class="col-md-12"> <div id="product-images"> </div></div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-12"> 
+                    <form class="form" id="product-form-images" name="product-form-images"
+                    action="{{ route('update-product-images') }}" method="post" enctype="multipart/form-data">
+        
+        
+                    <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="id" id="id" value="{{ $product['id'] }}">
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="file-multiple-input"
+                                class=" form-control-label"> </label></div>
+                        <div class="col-12 col-md-9"><input type="file" id="multiple_files"
+                                name="multiple_files[]" multiple="" class="form-control-file"></div>
                     </div>
-                </div>
-                <div class="col-sm-8">
-                    <div class="page-header float-right">
-                        <div class="page-title">
-                            <button type="button" onclick="window.open('{{ route('products.index') }}','_self')"
-                                class="btn btn-primary">  Ürünler</button>
-                        </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="file-multiple-input"
+                                class=" form-control-label"></label></div>
+                        <div class="col-12 col-md-9"><button onclick="formImagesSubmit()" id="submit_button2"
+                                class="btn btn-primary" >Güncelle</button></div>
                     </div>
+                    </form>
+
                 </div>
             </div>
+           
+           
+
+        </div>
+        <div class="tab-pane fade @if($tab==2) active show @endif" id="nav-comments" role="tabpanel" aria-labelledby="nav-comments-tab">
+            @include("admin.panel.products.product_comments")
+        </div>
+        <div class="tab-pane fade @if($tab==3) active show @endif" id="nav-keywords" role="tabpanel" aria-labelledby="nav-keywords-tab">
+            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, irure terry richardson ex sd. Alip placeat salvia cillum iphone. Seitan alip s cardigan american apparel, butcher voluptate nisi .</p>
+        </div>
+        <div class="tab-pane fade @if($tab==4) active show @endif" id="nav-bid" role="tabpanel" aria-labelledby="nav-bid-tab">
+            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, irure terry richardson ex sd. Alip placeat salvia cillum iphone. Seitan alip s cardigan american apparel, butcher voluptate nisi .</p>
         </div>
     </div>
 
-    <div class="content">
-        <div class="animated fadeIn">
-            <div class="row">
-             
-                <div class="col-lg-12">
-                    <div class="card">
-                        
-                        <div class="card-body card-block">
-                            <form class="form" id="product-form" name="product-form"
-                                action="{{ route('products-update') }}" method="post" enctype="multipart/form-data">
+</div>
  
-
-                                <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="id" id="id" value="{{ $product['id'] }}">
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="maöe" class="form-control-label">Yazar 
-                                            Adı</label></div>
-                                    <div class="col-12 col-md-9">
-
-                                       {{$product->user()->first()->name}}
-                                    </div>
-                                </div>
-
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="maöe" class="form-control-label">Ürün
-                                            Adı</label></div>
-                                    <div class="col-12 col-md-9">
-
-                                        <input type="text" id="title" name="title" placeholder="product adı" value="{{ $product['title'] }}"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="text-input" class=" form-control-label">Etiket
-                                            (slug)</label></div>
-                                    <div class="col-12 col-md-9">
-                                        <span id="slug-span">{{$product['slug']}}</span>
-                                        <input type="hidden" id="slug" name="slug" placeholder="Text" value="{{ $product['slug'] }}"
-                                            class="form-control">
-                                    </div>
-                                </div>
-
-
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="description"
-                                            class=" form-control-label">Ön Yazı</label></div>
-                                    <div class="col-12 col-md-9">
-                                        <input type="text" name="prologue" id="prologue"  value="{{ $product['prologue'] }}"
-                                        placeholder="önyazı..." class="form-control" ></input>
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-12">
-                                        <input type="hidden" name="product" id="product">
-                                        <div id="div_editor1"> </div>
-                                    </div>
-                                </div>
-
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="start_price"
-                                            class=" form-control-label">Başlangıç Fiyatı</label></div>
-                                    <div class="col-3 col-md-3">
-                                        <input class="form-control" type="number" value="{{$product['start_price']}}" name="start_price" id="start_price">
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="buy_now_price"
-                                            class=" form-control-label">Hemen Al Fiyatı</label></div>
-                                    <div class="col-3 col-md-3">
-                                        <input class="form-control" type="number" value="{{$product['buy_now_price']}}" name="buy_now_price" id="buy_now_price">
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="bid_price"
-                                            class=" form-control-label">Enaz arttırma tutarı</label></div>
-                                    <div class="col-3 col-md-3">
-                                        <input class="form-control" type="number" value="{{$product['bid_price']}}" name="bid_price" id="bid_price">
-                                    </div>
-                                </div>
-                                
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="description"
-                                            class=" form-control-label">Onaylandı</label></div>
-                                    <div class="col-12 col-md-9">
-                                        @if(!empty($product['verified'])) 
-                                        <input type="checkbox" name="verified" id="verified" value="13" data-toggle="switchbutton" checked >
-
-                                            {{ Carbon\Carbon::parse($product['verified'])->format('d.m.Y H:i')}} ,
-                                                @if($product->verified_by()->first())
-                                            {{$product->verified_by()->first()->name}}
-                                                @endif
-                                            @else 
-                                            <input type="checkbox" name="verified" id="verified" value="13" data-toggle="switchbutton"  >
-                                        @endif
-
-                                       
-                                    </div>
-                                </div>
-                                <div id="cats_div"></div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="description"
-                                            class=" form-control-label">Youtube Video</label></div>
-                                    <div class="col-12 col-md-9">
-                                        <input type="text" name="youtube_link" id="youtube_link"  value="{{$product['youtube_link']}}"
-                                        placeholder="https://www.youtube.com/watch?v...." class="form-control" ></input>
-                                    </div>
-                                </div>
-                              @if(!empty($product['youtube_link']))
-                              <div class="row form-group">
-                                <div class="col col-md-12"> 
-                             
-                                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/{{$youtube_link}}" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        
-                              @endif
-
-
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="file-input" class=" form-control-label">product
-                                            Resmi</label></div>
-                                    <div class="col-12 col-md-9"><input type="file" id="icon" name="icon"
-                                            class="form-control-file"></div>
-                                </div>
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="file-multiple-input"
-                                            class=" form-control-label">Diğer Resimler</label></div>
-                                    <div class="col-12 col-md-9"><input type="file" id="multiple_files"
-                                            name="multiple_files[]" multiple="" class="form-control-file"></div>
-                                </div>
-                                @if($product->icon)
-                                <div class="row form-group" id="preview_pic" >
-                                    <div class="col col-md-3"></div>
-                                    <div class="col-12 col-md-9">
-                                        <a href="#" data-toggle="modal" data-target="#mediumModal" onclick="show_image('icon',{{$product->id}})">
-                                        <img id="previewImage" src="{{url('/files/products/'.$product->slug.'/'.$product->icon)}}" alt="Preview Image"
-                                            style="max-width: 300px">
-                                        </a>
-                                    </div>
-                                </div>
-                                @else
-                                <div class="row form-group" id="preview_pic" style="display: none">
-                                    <div class="col col-md-3"></div>
-                                    <div class="col-12 col-md-9">
-                                        <img id="previewImage" src="#" alt="Preview Image"
-                                            style="max-width: 300px">
-                                    </div>
-                                </div>
-                                @endif
-                              
-                                <div class="row form-group">
-                                    <div class="col col-md-3"><label for="file-multiple-input"
-                                            class=" form-control-label"></label></div>
-                                    <div class="col-12 col-md-9"><button onclick="formSubmit()" id="submit_button"
-                                            class="btn btn-primary" onmouseover="fillproduct()">Güncelle</button></div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="card-footer">
-<textarea id="tmptxt" style="display: none">{{$product_txt}}</textarea>
-                        </div>
-                        <div class="card">
-
-                            <div class="card-body card-block">
-                                <div id="product-images">
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-            </div>
-        </div><!-- .animated -->
-    </div><!-- .content -->
 @endsection
 
 @section('scripts')
@@ -239,6 +100,8 @@ async function show_image(type='image',id){
     });
 
     async function bring_images(image_id=0,rank=0){
+     //   alert("ok");
+     
         await $.get('/admin-panel/products/show-product-images/'+{{$product->id}}+"/"+image_id+"/"+rank , function(data, status) {
               
               $("#product-images").html(data);
@@ -276,14 +139,19 @@ function fillproduct(){
     document.getElementById('product').value =content;
 }
  
-
+//product-form-images
 $('#product-form').submit(function(e) {
     e.preventDefault();
     var error = false;
     var formData = new FormData(this);
     formData.append('additionalData', 'value');
 });
-
+$('#product-form-images').submit(function(e) {
+    e.preventDefault();
+    var error = false;
+    var formData = new FormData(this);
+    formData.append('additionalData', 'value');
+});
 
 document.getElementById('icon').addEventListener('change', function(event) {
     const file = event.target.files[0];
@@ -305,6 +173,36 @@ document.getElementById('title').addEventListener('input', function(event) {
 
 });
  
+async function formImagesSubmit() {
+
+
+    let error = false;
+if ($('#multiple_files').val() == '') {
+
+    $('#multiple_files').focus();
+    Swal.fire({
+        icon: 'error',
+        text: 'Lütfen dosya seçiniz'
+    });
+
+    error = true;
+    return false;
+} 
+
+    var formData = new FormData(document.getElementById('product-form-images'));
+ 
+$('#submit_button2').prop('disabled',true);
+await save(formData, '/admin-panel/products/update-product-images', '', '');
+
+
+
+setTimeout(() => {
+    bring_images();
+    $('#submit_button2').prop('disabled',false);
+    $('#multiple_files').val('');
+}, 2000);
+
+}
 async function formSubmit() {
 
 let error = false;
@@ -435,7 +333,8 @@ $('#submit_button').prop('disabled',true);
 save(formData, '/admin-panel/products/update', '', '');
  
 setTimeout(() => {
-    window.open("/admin-panel/products/", "_self")
+  //  window.open("/admin-panel/products/", "_self")
+   window.open("/admin-panel/products/edit/{{$product['id']}}", "_self")
 }, 3000);
 
 }
@@ -447,5 +346,5 @@ function doesNotStartWithYouTube(str) {
     </script>
 
 
-    <script type="text/javascript" src="{{ url('assets/js/categories.js') }}"></script>
+   
 @endsection

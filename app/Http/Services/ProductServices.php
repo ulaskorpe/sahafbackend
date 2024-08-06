@@ -68,7 +68,7 @@ class ProductServices{
                    $path = public_path("files/products/" . $product['slug']);
                    $filename =  rand(1000,99999). "_" . date('YmdHis') . "." . GeneralHelper::findExtension($file->getClientOriginalName());
                    $file->move($path, $filename);
-                  
+                   // echo $file; 
                    $path = public_path("files/products/" . $product['slug'] . "/" . $filename);
    
                   $resizedImage = Image::make($path)->resize(200, null, function ($constraint) {

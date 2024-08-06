@@ -47,9 +47,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
+    public function bids()
+    {
+        return $this->hasMany(\App\Models\ProductBid::class, 'product_id');
+    }
     public function permissions() 
     {
         return $this->belongsToMany(Permission::class, 'user_permission')->withPivot('value');
+    }
+
+    public function keywords()
+    {
+        return $this->belongsToMany(Keyword::class, 'keywordables', 'user_id', 'keyword_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(\App\Models\Comment::class, 'user_id');
     }
 }
