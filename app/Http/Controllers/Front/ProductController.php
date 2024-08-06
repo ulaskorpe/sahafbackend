@@ -57,15 +57,17 @@ class ProductController extends Controller
                 $product = Product::find($request['product_id']);
                 if($product['new_price']+$request['users_bid']<$product['buy_now_price']){
                     $bid =$request['users_bid'];
-                    $msg = $bid . " TL  Teklifiniz başarı ile alınmıştır ,teşekkür ederiz";
-                    $new_price =  $product['new_price']+$request['users_bid'];
+                    $new_price =  (($product['new_price']>0)?$product['new_price']:$product['current_price'])+$request['users_bid'];
+                    $msg = $new_price . " TL  Teklifiniz başarı ile alınmıştır ,teşekkür ederiz";
+                   
                      
                 }else{
+                    $new_price = $product['buy_now_price'];
                     $bid = $product['buy_now_price']-$product['new_price'];
-                    $msg = $bid. " TL Teklifiniz ile ürünü kazandınız ,tebrik ederiz";
+                    $msg = $new_price. " TL Teklifiniz ile ürünü kazandınız ,tebrik ederiz";
                     $this->product_win($product);
            
-                    $new_price = $product['buy_now_price'];
+                    
                 }
 
                 
