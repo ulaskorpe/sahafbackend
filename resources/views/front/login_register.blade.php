@@ -150,8 +150,12 @@ if ($('#captha').val() == '') {
            }
            var formData = new FormData(document.getElementById('login-form'));
 $('#submit_button').prop('disabled',true);
-  await save(formData, '/login_user', '', '','{{url('/')}}');
-
+  
+  @if(empty(session('return_link')))
+await save(formData, '/login_user', '', '','{{url('/')}}');
+@else
+await save(formData, '/login_user', '', '','{{session('return_link')}}');
+@endif 
 }////
 
 async function registerFormSubmit() {
@@ -322,7 +326,12 @@ if ($('#name').val() == '') {
 
 var formData = new FormData(document.getElementById('register-form'));
 $('#submit_button').prop('disabled',true);
-  await save(formData, '/register_user', '', '','{{url('/')}}');
+@if(empty(session('return_link')))
+await save(formData, '/register_user', '', '','{{url('/')}}');
+@else
+await save(formData, '/register_user', '', '','{{session('return_link')}}');
+@endif 
+  
  
 // setTimeout(() => {
 //       window.open('{{url('/')}}','_self');

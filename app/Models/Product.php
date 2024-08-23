@@ -13,11 +13,12 @@ class Product extends Model
     ,'slug','category_id','user_id','youtube_link','verified','verified_by',
     'start_price'
     ,'buy_now_price','current_price','bid_price','winner_id'];
+
+    
     public function bids()
     {
-        return $this->hasMany(\App\Models\ProductBid::class, 'product_id');
+        return $this->hasMany(\App\Models\ProductBid::class, 'product_id')->orderBy('created_at', 'desc'); 
     }
-  
     public function images()
     {
         return $this->hasMany(\App\Models\ProductImage::class, 'product_id');
@@ -25,7 +26,7 @@ class Product extends Model
 
     public function comments()
     {
-        return $this->hasMany(\App\Models\Comment::class, 'product_id');
+        return $this->hasMany(\App\Models\Comment::class, 'product_id')->where('comment_id', 0);
     }
     public function keywords()
     {

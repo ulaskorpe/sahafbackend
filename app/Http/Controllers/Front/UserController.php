@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Exception;
+//use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 //use App\Models\Permission;
@@ -47,6 +48,57 @@ class UserController extends Controller
         }
     }
 
+    
+
+
+
+    public function user_profile(){
+        // $faker = Factory::create();
+        // return $faker->userName();
+        // $users = User::all();
+        // foreach($users as $user){
+        //     $user->username=  GeneralHelper::fixName($user['name']) ;
+        //     $user->save();
+        // }
+        // die();
+
+     
+
+        return view('front.profile',['title'=>'Hesabım','user'=>User::where('user_code','=',Session::get('user_code'))->first()]);
+    }
+    public function user_profile_post(Request $request){
+        
+        try{
+            $msg ="Bilgileriniz Güncellendi";
+
+            $avatar = $this->service->create_avatar($request);
+
+           $user = User::where('user_code','=',Session::get('user_code'))->first();
+           if(!empty($user['id'])){
+           $user->name = $request['name'];
+           $user->username = $request['username'];
+            $user->avatar = $avatar ;
+           $user->phone_number = (!empty($request->phone_number))?$request->phone_number:'';
+        
+            if($request['email']!=$user['email']){
+                 $user->new_email = $request['email'];
+                 $msg.= " Eposta bilginizin de güncellenmesi için epostanıza gönderilen linki kullanınız";
+            }
+ 
+            $user->save();
+            
+
+ 
+             return  $this->success([''],$msg ,200);
+            }else{
+                return  $this->success([''],"WTF!!" ,200);
+            }
+         }catch (Exception $e){
+            // return response()->json(['error' => $e->getMessage()], 500);
+             return  $this->error([''], $e->getMessage() ,500);
+         } 
+    }
+
     public function forget_password(){
         if(!empty(Session::get('user_code'))){
             return redirect(route('index'));
@@ -58,7 +110,23 @@ class UserController extends Controller
         }
     }
 
-
+    public function email_update($token){
+        $msg = "Böyle bir kullanıcı bulunamadı";
+        $user = User::where('remember_token','=',$token)->first();
+        
+        if(!empty($user) && (!empty($user['new_email']))){
+             
+                $msg = "EPosta adresiniz".$user['new_email']. " olarak güncellenmiştir";
+                $user->email = $user['new_email'];
+                $user->new_email = null;
+                $user->save();
+           
+            return view('front.confirm',['msg'=>$msg]);
+        }else{
+            return redirect(route('index'));
+        }
+        
+    }
 
 
 
@@ -68,6 +136,7 @@ class UserController extends Controller
             return redirect(route('index'));
         }else{
            $data  =  $this->service->generateImage();
+          
         return view('front.login_register',['action'=>'user_login',
         'todo'=>'Üye Giriş','products'=>$this->service->pick_items(),'img'=>$data['img'],'text'=>$data['text']]);
         }
@@ -96,7 +165,7 @@ class UserController extends Controller
            
            $user = User::create([
                 'name'=>$request->name,
-                'username'=>$request->username,
+                'username'=>(!empty($request->username))?$request->username:GeneralHelper::fixName($request->name),
                 'phone_number'=>(!empty($request->phone_number))?$request->phone_number:'',
                 'email'=>$request->email,
                 'password'=> Hash::make($request->password),
@@ -125,7 +194,7 @@ class UserController extends Controller
 
        if ($user && Hash::check($request['password'], $user->password)) {
         Auth::attempt(['user_code' =>(integer)$user['user_code'], 'password' =>(string)$request->password]);
-        Session::put('user_code',$user['user_code']);
+        Session::put('user_code',$user['user_code']);  
         if(!empty($request['remember_me'])) {
                 $rememberToken = Str::random(60); // Generate a random token
                  
@@ -212,13 +281,34 @@ class UserController extends Controller
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $err = "Geçersiz eposta adresi";
             }else{
-                $user = User::where('email','=',$email)->first();
+
+                if(!empty(Session::get('user_code'))){
+                    $user = User::select('id')->where('user_code','=',Session::get('user_code'))->first();
+                    $id = $user['id'];
+                }else{
+                    $id = 0;
+                }
+                    
+
+                $user = User::where('email','=',$email)->where('id','<>',$id)->first();
                 $err = (!empty($user))?"Bu eposta ile başka bir kullanıcı kayıtlı":"ok";
             }
     
     
             return response()->json($err);
     
+        }
+
+        public function cancel_email_update(){
+            if(!empty(Session::get('user_code'))){
+                $user = User::where('user_code','=',Session::get('user_code'))->first();
+           
+                $user->new_email = null;
+                $user->save();
+
+                return response()->json("ok");
+            }
+
         }
         public function logout(Request $request){
             Cookie::queue('remember_me', '',0);
@@ -231,7 +321,14 @@ class UserController extends Controller
             if (strlen($username)<6) {
             $err = "kullanıcı adınız 6 karakterden az olmamalıdır";
             }else{
-                $user = User::where('username','=',$username)->first();
+                if(!empty(Session::get('user_code'))){
+                    $user = User::select('id')->where('user_code','=',Session::get('user_code'))->first();
+                    $id = $user['id'];
+                }else{
+                    $id = 0;
+                }
+            
+                $user = User::where('username','=',$username)->where('id','<>',$id)->first();
                 $err = (!empty($user))?"Bu kullanıcı adı ile başka bir kullanıcı kayıtlı":"ok";
             }
     
@@ -246,7 +343,17 @@ class UserController extends Controller
             if (!is_int(intval($phone_number)) || ($phone_number < 5000000000 || $phone_number>5999999999)) {
             $err = "Lütfen geçerli bir telefon numarası giriniz ";
             
+        }else{
+            if(!empty(Session::get('user_code'))){
+                $user = User::select('id')->where('user_code','=',Session::get('user_code'))->first();
+                $id = $user['id'];
+            }else{
+                $id = 0;
             }
+        
+            $user = User::where('phone_number','=',$phone_number)->where('id','<>',$id)->first();
+            $err = (!empty($user))?"Bu telefon numarası ile başka bir kullanıcı kayıtlı":"ok";
+        }
  
                 return response()->json($err);
     

@@ -27,9 +27,10 @@
                     <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                     
                     </form>
-                        <button class="dropdown-item" type="button"  >Hesabım</button>
+                        <button class="dropdown-item" type="button" onclick="window.open('{{route('user-profile')}}','_self')" >Hesabım</button>
                         <button class="dropdown-item" type="button"  >Ürünlerim</button>
                         <button class="dropdown-item" type="button"  >İzlediklerim</button>
+                        <button class="dropdown-item" type="button"  >Mesaj Kutum</button>
                         <button class="dropdown-item" type="button"  >Taleplerim</button>
                         <button class="dropdown-item" type="button"  >Mağazam</button>
       

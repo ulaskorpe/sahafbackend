@@ -42,10 +42,7 @@
                 <input class="form-control"  name="captha" id="captha" type="text" maxlength="6" placeholder="">
             </div>
 
-            <div class="col-md-6 form-group p-6">
-              
-            </div>
-
+     
            
 
             <div class="col-md-6 form-group">

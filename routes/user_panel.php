@@ -14,27 +14,38 @@ Route::middleware(['frontenddata'])->group(function () {
     Route::get('/blog/{slug}/{id}',[HomeController::class, 'blog_detail']);
     Route::get('/giris',[UserController::class, 'login'])->name('user-login');
     Route::get('/sifremi-unuttum',[UserController::class, 'forget_password'])->name('user-forget-pw');
+    
+    
     Route::get('/kayit-ol',[UserController::class, 'register'])->name('user-register');
     Route::get('/all-blog/{key?}/{page?}',[HomeController::class, 'blogs']);
 
     Route::get('/kategori-detay/{slug}',[HomeController::class, 'category_detail'])->name('category_detail') ;
     Route::get('/confirm/{token}',[UserController::class, 'confirm_user'])->name('confirm_user');
+    Route::get('/eposta-guncelleme/{token}',[UserController::class, 'email_update'])->name('email_update');
     Route::get('/urun-detay/{slug}/{id}',[ProductController::class, 'product_detail'])->name('product_detail');
     Route::get('/blog-detay/{slug}/{id}',[BlogController::class, 'blog_detail'])->name('blog_detail');
     Route::get('/sss',[HomeController::class, 'faqs'])->name('sss');
-    
+
     Route::get('/hakkimizda',[HomeController::class, 'about'])->name('about-us');
     Route::get('/yardim',[HomeController::class, 'help'])->name('help-me');
+    
     Route::get('/iletisim',[ContactController::class, 'contact'])->name('contact');
-    Route::post('/iletisim-post',[ContactController::class, 'contact_post'])->name('contact_post');
+
     Route::group(['middleware'=>\App\Http\Middleware\checkUser::class],function (){
         Route::post('/make-offer',[ProductController::class, 'make_offer'])->name('make_offer');
-
+        Route::get('/hesabim',[UserController::class, 'user_profile'])->name('user-profile');
+        Route::post('/user-profile-post',[UserController::class, 'user_profile_post'])->name('user-profile-post');
 
     });
 });
+Route::get('/cancel-email-update',[UserController::class, 'cancel_email_update'])->name('cancel-email-update');
+Route::post('/iletisim-post',[ContactController::class, 'contact_post'])->name('contact_post');
+Route::post('/comment-post',[ProductController::class, 'comment_post'])->name('comment_post');
 
 Route::get('/faqin/{key?}',[HomeController::class, 'faqin'])->name('faqin');
+Route::get('/product-bids/{product_id}/{page?}',[ProductController::class, 'product_bids'])->name('product-bids');
+Route::get('/product-comments/{product_id}/{page?}',[ProductController::class, 'product_comments'])->name('product-comments');
+Route::get('/product-make-comment/{product_id}/{comment_id?}',[ProductController::class, 'product_make_comment'])->name('product-make-comment');
 
 Route::get('/check-email/{email}',[UserController::class, 'email_check'])->name('email-user-check');
 Route::get('/check-username/{username}',[UserController::class, 'username_check'])->name('username-check');

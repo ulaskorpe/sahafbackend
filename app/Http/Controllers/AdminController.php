@@ -18,6 +18,7 @@ class AdminController extends Controller
     public function __construct(){
        
     }
+    private $allowed_array = ['jpg', 'jpeg','png'];
 
     public function check_old_pw($old_pw){
         // $user = Auth::user();

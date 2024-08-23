@@ -15,7 +15,7 @@
                         <a class="h6 text-decoration-none text-truncate" href="{{route('product_detail',[$pr["slug"],$pr['id']])}}">{{$pr['title']}}</a>
                         
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>{{$pr['current_price']}}    &#8378;</h5><h6 class="text-muted ml-2"><del>{{$pr['start_price']}} &#8378;</del></h6>
+                            <h5>{{$pr['current_price']}} &#8378;</h5><h6 class="text-muted ml-2"><del>{{$pr['start_price']}} &#8378;</del></h6>
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>

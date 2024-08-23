@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Mail\UserCreatedEmail;
+use App\Mail\UserEmailUpdate;
 use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -25,6 +26,12 @@ class UserObserver
 
 
     public function saved(User $user){
-
+            if($user->isDirty('new_email')){
+                if($user['new_email']!=null){
+                $link = url('/eposta-guncelleme/'.$user['remember_token']);
+     
+                Mail::to($user['new_email'])->send(new UserEmailUpdate($user['name'],$link));
+                }
+            }
     }
 }
