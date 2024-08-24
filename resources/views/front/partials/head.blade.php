@@ -13,7 +13,8 @@
     <link  rel="stylesheet"  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" >  
 
     <!-- Font Awesome -->
-    <link  rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" >
+ 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Libraries Stylesheet -->
  

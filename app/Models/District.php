@@ -11,7 +11,7 @@ class District extends Model
 
     protected $fillable = ['id', 'name','town_id'];
 
-    protected $table = 'disricts';
+    protected $table = 'districts';
 
     public function neigborhoods()
     {

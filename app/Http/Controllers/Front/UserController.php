@@ -52,7 +52,7 @@ class UserController extends Controller
 
 
 
-    public function user_profile(){
+    public function user_profile($select=1){
         // $faker = Factory::create();
         // return $faker->userName();
         // $users = User::all();
@@ -61,13 +61,13 @@ class UserController extends Controller
         //     $user->save();
         // }
         // die();
-
+            $select = (!in_array($select,[1,2,3,4,5]))?1:$select;
      
 
-        return view('front.profile',['title'=>'Hesabım','user'=>User::where('user_code','=',Session::get('user_code'))->first()]);
+        return view('front.profile',['title'=>'Hesabım','user'=>User::where('user_code','=',Session::get('user_code'))->first(),'selected'=>$select]);
     }
     public function user_profile_post(Request $request){
-        
+        if(!empty(Session::get('user_code'))){
         try{
             $msg ="Bilgileriniz Güncellendi";
 
@@ -78,6 +78,7 @@ class UserController extends Controller
            $user->name = $request['name'];
            $user->username = $request['username'];
             $user->avatar = $avatar ;
+            $user->about = $request['about'] ;
            $user->phone_number = (!empty($request->phone_number))?$request->phone_number:'';
         
             if($request['email']!=$user['email']){
@@ -97,6 +98,7 @@ class UserController extends Controller
             // return response()->json(['error' => $e->getMessage()], 500);
              return  $this->error([''], $e->getMessage() ,500);
          } 
+        }
     }
 
     public function forget_password(){

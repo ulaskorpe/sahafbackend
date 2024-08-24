@@ -23,7 +23,7 @@ class User extends Authenticatable
         'phone_number',
         'password',
         'admin_code',
-        'email_verified_at',
+        'email_verified_at','about','new_email',
         'avatar',
         'remember_token','user_code','username'
     ];
@@ -64,5 +64,10 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(\App\Models\Comment::class, 'user_id');
+    }
+
+    public function addreses()
+    {
+        return $this->hasMany(\App\Models\UserAddress::class, 'user_id');
     }
 }

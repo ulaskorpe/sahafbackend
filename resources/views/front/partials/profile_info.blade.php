@@ -8,12 +8,12 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label>Adınız Soyadınız</label>
-                <input class="form-control" type="text" placeholder="" name="name" id="name" value="{{$user['name']}}">
+                <input class="form-control" type="text" placeholder="" maxlength="100" name="name" id="name" value="{{$user['name']}}">
             </div>
       
             <div class="col-md-6 form-group">
                 <label>Kullanıcı Adınız</label>
-                <input class="form-control" type="text" placeholder="" name="username" id="username" value="{{$user['username']}}">
+                <input class="form-control" type="text" placeholder="" maxlength="50" name="username" id="username" value="{{$user['username']}}">
 
             </div>
             <div class="col-md-6 form-group">
@@ -27,7 +27,7 @@
             
             @else 
             <label>E-posta</label>
-            <input class="form-control" type="text" placeholder=""  name="email" id="email" value="{{$user['email']}}">
+            <input class="form-control" type="text" placeholder="" maxlength="100"  name="email" id="email" value="{{$user['email']}}">
                 @endif 
             </div>
             <div class="col-md-6 form-group">
@@ -55,7 +55,14 @@
                         style="max-width: 300px;display:none">
                 </div>
             </div>
-          
+            <div class="col-md-12 form-group" id="preview_pic" >
+                <div class="col col-md-3"></div>
+                <div class="col-12 col-md-12"> 
+                    <label>Hakkımda</label>
+                    <textarea class="form-control" id="about" name="about">{{$user['about']}}</textarea>
+                  
+                </div>
+            </div>
 
      
            

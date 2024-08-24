@@ -201,11 +201,13 @@ if ($('#password').val()=='') {
             error = true;
             return false;
         }
-    console.log(error);
+    //console.log(error);
     var formData = new FormData(document.getElementById('password-form'));
-    console.log(formData);
-             save(formData, '{{ route('password-post') }}', 'password-form', '');
-             document.getElementById('password-form').reset();
+   // console.log(formData);
+           
+             save(formData, '{{ route('password-post') }}', '', '','{{url('/admin-panel/profile')}}');
+
+            // document.getElementById('password-form').reset();
            
             
 }
@@ -274,9 +276,11 @@ if ($('#password').val()=='') {
 
             //function save(formData,route,formID,btn,reload) {
             var formData = new FormData(this);
-
-            save(formData, '{{ route('profile-post') }}', 'user-form', '', false);
-
+            save(formData, '{{ route('profile-post') }}', '', '','{{url('/admin-panel/profile')}}');
+            //save(formData, '{{ route('profile-post') }}', 'user-form', '', false);
+    //         setTimeout(() => {
+    //   window.open('{{url('/admin-panel/profile')}}','_self');
+    //     }, 2000);
 
         });
     </script>

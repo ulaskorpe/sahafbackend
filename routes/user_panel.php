@@ -4,8 +4,9 @@ use App\Http\Controllers\Front\BlogController;
 use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Front\UserController;
+use App\Http\Controllers\Front\UserAddressController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Session;
 //use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 
@@ -33,14 +34,32 @@ Route::middleware(['frontenddata'])->group(function () {
 
     Route::group(['middleware'=>\App\Http\Middleware\checkUser::class],function (){
         Route::post('/make-offer',[ProductController::class, 'make_offer'])->name('make_offer');
-        Route::get('/hesabim',[UserController::class, 'user_profile'])->name('user-profile');
-        Route::post('/user-profile-post',[UserController::class, 'user_profile_post'])->name('user-profile-post');
+        Route::get('/hesabim/{select?}',[UserController::class, 'user_profile'])->name('user-profile');
+      
 
     });
 });
-Route::get('/cancel-email-update',[UserController::class, 'cancel_email_update'])->name('cancel-email-update');
+
+Route::group(['middleware'=>\App\Http\Middleware\checkUser::class],function (){
+
+    Route::post('/comment-post',[ProductController::class, 'comment_post'])->name('comment_post');
+    Route::post('/user-address-post',[UserAddressController::class, 'user_address_post'])->name('user-address-post');
+    Route::post('/user-profile-post',[UserController::class, 'user_profile_post'])->name('user-profile-post');
+    Route::get('/cancel-email-update',[UserController::class, 'cancel_email_update'])->name('cancel-email-update');
+    Route::get('/address-form/{id?}',[UserAddressController::class, 'address_form'])->name('address-form');
+    Route::get('/make-primary/{id}',[UserAddressController::class, 'make_primary'])->name('make-primary');
+    Route::get('/delete-address/{id}',[UserAddressController::class, 'delete_address'])->name('delete-address');
+    Route::get('/user-addresses',[UserAddressController::class, 'user_addresses'])->name('user-addresses');
+    Route::get('/town-select/{city_id}',[UserAddressController::class, 'town_select'])->name('town-select');
+    Route::get('/district-select/{town_id}',[UserAddressController::class, 'district_select'])->name('district-select');
+    Route::get('/neighborhood-select/{district_id}',[UserAddressController::class, 'neighborhood_select'])->name('neighborhood-select');
+});
+
+
+
+
 Route::post('/iletisim-post',[ContactController::class, 'contact_post'])->name('contact_post');
-Route::post('/comment-post',[ProductController::class, 'comment_post'])->name('comment_post');
+
 
 Route::get('/faqin/{key?}',[HomeController::class, 'faqin'])->name('faqin');
 Route::get('/product-bids/{product_id}/{page?}',[ProductController::class, 'product_bids'])->name('product-bids');
