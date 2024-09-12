@@ -2,7 +2,7 @@
                                
     <div class="col-md-2"></div>
     <div class="col-md-8">
-        <form class="form" id="info-form" name="info-form" action='{{route('user-profile-post')}}'
+        <form class="form" id="info-form" name="info-form" action='#' onsubmit="return false"
         method="post" enctype="multipart/form-data">
         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
         <div class="row">

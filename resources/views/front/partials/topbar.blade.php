@@ -28,7 +28,7 @@
                     
                     </form>
                         <button class="dropdown-item" type="button" onclick="window.open('{{route('user-profile')}}','_self')" >Hesabım</button>
-                        <button class="dropdown-item" type="button"  >Ürünlerim</button>
+                        <button class="dropdown-item" type="button"  onclick="window.open('{{route('my-products')}}','_self')" >Ürünlerim</button>
                         <button class="dropdown-item" type="button"  >İzlediklerim</button>
                         <button class="dropdown-item" type="button"  >Mesaj Kutum</button>
                         <button class="dropdown-item" type="button"  >Taleplerim</button>

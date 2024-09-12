@@ -45,13 +45,13 @@
                     <div class="tab-content">
                         <div class="tab-pane fade  @if($selected==1) show active @endif" id="tab-pane-1">
 
-                            @include("front.partials.profile_info")
+                            @include("front.partials.profile.profile_info")
                         </div>
                         <div class="tab-pane fade @if($selected==2) show active @endif" id="tab-pane-2">
-                            @include("front.partials.profile_addresses")
+                            @include("front.partials.profile.profile_addresses")
                         </div>
                         <div class="tab-pane fade @if($selected==3) show active @endif" id="tab-pane-3">
-                           d
+                            @include("front.partials.profile.profile_pw")
                         </div>
                         <div class="tab-pane fade @if($selected==4) show active @endif" id="tab-pane-4">
                             5
@@ -224,20 +224,20 @@ function my_addresses(address_id){
 
 
 
-$('#forget-form').submit(function(e) {
-    e.preventDefault();
-    var error = false;
-    var formData = new FormData(this);
-    formData.append('additionalData', 'value');
-});
+// $('#forget-form').submit(function(e) {
+//     e.preventDefault();
+//     var error = false;
+//     var formData = new FormData(this);
+//     formData.append('additionalData', 'value');
+// });
 
 
-$('#info-form').submit(function(e) {
-    e.preventDefault();
-    var error = false;
-    var formData = new FormData(this);
-    formData.append('additionalData', 'value');
-});
+// $('#info-form').submit(function(e) {
+//     e.preventDefault();
+//     var error = false;
+//     var formData = new FormData(this);
+//     formData.append('additionalData', 'value');
+// });
 
 async function infoFormSubmit() {
 
@@ -555,7 +555,7 @@ var formData = new FormData(document.getElementById('address-form'));
 $('#submit_button').prop('disabled',true);
 // alert("ok");
 ///async function save(formData,route,formID,btn,reload) 
-await save(formData, '/user-address-post', '', '','{{url('/hesabim')}}');
+await save(formData, '/user-address-post', '', '','{{url('/hesabim/2')}}');
 
 
 }
@@ -695,6 +695,89 @@ function town_select(selected_town) {
     }
 
 //// addresss fx ////////////
+//// pw fx ////////////
+
+
+async function pwFormSubmit(){
+
+let error = false;
+if ($('#password_old').val() == '') {
+
+$('#password_old').focus();
+Swal.fire({
+icon: 'error',
+text: 'eski şifrenizi giriniz'
+});
+
+error = true;
+return false;
+} else {
+
+const response = await fetch('/check-old-pw/' + $('#password_old').val());
+    const data = await response.json();
+    if(data !== 'ok'){
+        $('#password_old').val('');
+        $('#password_old').focus();
+        
+
+    Swal.fire({
+                icon: 'error',
+                text: data
+            });
+
+            error = true;
+            return false;
+        }
+
+}
+
+if ($('#password').val()=='') {
+        $('#password').focus();
+        Swal.fire({
+            icon: 'error',
+            text: ' şifrenizi giriniz'
+        });
+
+        error = true;
+        return false;
+
+    }
+if ($('#password').val().length < 6) {
+        $('#password').focus();
+        Swal.fire({
+            icon: 'error',
+            text: 'şifreniz en az 6 karakter olmalıdır'
+        });
+
+        error = true;
+        return false;
+
+    }
+
+    if ($('#password').val()!== $('#password_confirm').val()) {
+        $('#password_confirm').val('');
+        $('#password_confirm').focus();
+        Swal.fire({
+            icon: 'error',
+            text: 'şifrenizi yeniden giriniz'
+        });
+
+        error = true;
+        return false;
+    }
+//console.log(error);
+var formData = new FormData(document.getElementById('pw-form'));
+// console.log(formData);
+       
+         save(formData, '{{ route('user-password-post') }}', '', '','{{url('/hesabim/3')}}');
+
+        // document.getElementById('password-form').reset();
+       
+        
+}
+
+//// pw fx ////////////
+
 
 
     </script>

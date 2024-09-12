@@ -5,6 +5,8 @@ use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\UserAddressController;
+use App\Http\Controllers\Front\UserProducts;
+use App\Http\Controllers\Front\UserPWController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 //use App\Http\Controllers\DashboardController;
@@ -35,6 +37,7 @@ Route::middleware(['frontenddata'])->group(function () {
     Route::group(['middleware'=>\App\Http\Middleware\checkUser::class],function (){
         Route::post('/make-offer',[ProductController::class, 'make_offer'])->name('make_offer');
         Route::get('/hesabim/{select?}',[UserController::class, 'user_profile'])->name('user-profile');
+        Route::get('/urunlerim/{select?}',[UserProducts::class, 'my_products'])->name('my-products');
       
 
     });
@@ -53,6 +56,11 @@ Route::group(['middleware'=>\App\Http\Middleware\checkUser::class],function (){
     Route::get('/town-select/{city_id}',[UserAddressController::class, 'town_select'])->name('town-select');
     Route::get('/district-select/{town_id}',[UserAddressController::class, 'district_select'])->name('district-select');
     Route::get('/neighborhood-select/{district_id}',[UserAddressController::class, 'neighborhood_select'])->name('neighborhood-select');
+
+    Route::get('/check-old-pw/{pw}',[UserPWController::class, 'check_old_pw'])->name('check-old-pw');
+    Route::post('/password-post',[UserPWController::class,'password_post'])->name('user-password-post');
+
+    Route::get('/user-products/{page?}',[UserProducts::class, 'user_products'])->name('user-products');
 });
 
 

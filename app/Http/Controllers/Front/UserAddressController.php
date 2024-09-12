@@ -125,7 +125,7 @@ class UserAddressController extends Controller
         }
         
         $cities =City::orderBy('name')->get();
-        return view('front.partials.address_form', compact('cities','exe','type','name','city_id','town_id','district_id','neighborhood_id','address_text','selected','address_id'));
+        return view('front.partials.profile.address_form', compact('cities','exe','type','name','city_id','town_id','district_id','neighborhood_id','address_text','selected','address_id'));
     }
 
 
@@ -158,7 +158,7 @@ class UserAddressController extends Controller
 
         // }
 
-        return view('front.partials.my_addresses',['addresses'=>UserAddress::with('neighborhood','district','town','city')->where('user_id','=',$this->user_id() )
+        return view('front.partials.profile.my_addresses',['addresses'=>UserAddress::with('neighborhood','district','town','city')->where('user_id','=',$this->user_id() )
         ->orderBy('selected','DESC')->get(),'type_array'=>['home'=>'Ev','work'=>'İş','other'=>'Diğer']]);
     }
 }
