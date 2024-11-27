@@ -19,7 +19,7 @@
 
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <div class="input-group-addon">Admin Kodu</div>
+                                        <div class="input-group-addon">Admin Kodu {{Session::get('admin_code')}}</div>
                                         <input type="text" id="admin_code" name="admin_code" disabled
                                             value="{{ $user['admin_code'] }}" class="form-control">
                                         <div class="input-group-addon"><i class="fa fa-check"></i></div>
